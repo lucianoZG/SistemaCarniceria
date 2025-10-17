@@ -7,6 +7,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     </head>
     <body>
+        <br>
+        
         <h1 class="text-center"> Inicio de sesión</h1>
 
         <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center">
@@ -27,10 +29,17 @@
                         <button type="submit" class="btn btn-secondary btn-lg btn-block">Ingresar</button>
                     </div>
                 </form>
-                
+
+                <br>
+
                 <div class="box-footer">
-                        <button type="button" class="btn btn-secondary btn-lg btn-block"><a th:href="@{/login}">Registrarse</a></button>
-                    </div>
+                    <a th:href="@{/registrarUsuario}" 
+                       class="btn btn-secondary btn-lg btn-block text-white" 
+                       style="text-decoration: none;">
+                        Registrarse
+                    </a>
+                </div>
+
             </div>
         </div>
     </body>

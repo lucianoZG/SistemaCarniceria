@@ -33,4 +33,9 @@ public class UsuarioController {
         servicio.registrar(usuario.getUsername(), usuario.getPassword(), usuario.getEmail(), usuario.getTelefono(), usuario.getRol());
         return "redirect:/login"; // después de registrarse lo mando al login
     }
+    
+    @GetMapping("/index")
+    public String getIndex() {
+        return "index";
+    }
 }

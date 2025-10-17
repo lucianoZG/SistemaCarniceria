@@ -1,0 +1,38 @@
+<nav th:fragment="navbar(activePage)"
+     class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#" style="color:#900;">
+            🍖 Carnicería JP
+        </a>
+
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activePage == 'ventas'} ? 'active fw-semibold bg-light rounded px-3' : ''"
+                   th:href="@{/ventas}">Ventas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activePage == 'productos'} ? 'active fw-semibold bg-light rounded px-3' : ''"
+                   th:href="@{/productos}">Productos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activePage == 'empleados'} ? 'active fw-semibold bg-light rounded px-3' : ''"
+                   th:href="@{/empleados}">Empleados</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activePage == 'informes'} ? 'active fw-semibold bg-light rounded px-3' : ''"
+                   th:href="@{/informes}">Informes</a>
+            </li>
+        </ul>
+
+        <!-- Usuario -->
+        <div class="d-flex align-items-center">
+            <div class="me-3 text-end">
+                <span class="fw-semibold" th:text="${#authentication.name}">Usuario</span>
+                <div class="badge bg-light text-dark text-lowercase" th:text="${#authentication.principal.authorities[0].authority}">rol</div>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <button class="btn btn-outline-secondary btn-sm">Cerrar sesión</button>
+            </form>
+        </div>
+    </div>
+</nav>
