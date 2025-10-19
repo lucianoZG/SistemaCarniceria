@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
@@ -16,30 +15,22 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Empleado {
+public class Producto {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "empId")
+    @Column(name = "proId")
     private int id;
     
-    @NonNull
-    @Column(name = "empNombre")
-    private String nombre;
+    @Column(name = "proDescripcion")
+    private String descripcion;
     
-    @NonNull
-    @Column(name = "empDni")
-    private String dni;
+    @Column(name = "proPrecioUnitario")
+    private double precioUnitario;
     
-    @NonNull
-    @Column(name = "empDireccion")
-    private String direccion;
+    @Column(name = "proCantidad")
+    private double cantidad;
     
-    @NonNull
-    @Column(name = "empTelefono")
-    private String telefono;
-    
-    @Column(name = "empEstado", nullable = false)
+    @Column(name = "proEstado", nullable = false)
     private boolean estado = true;
-    
 }

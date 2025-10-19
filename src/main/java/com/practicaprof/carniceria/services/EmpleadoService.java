@@ -15,20 +15,29 @@ public class EmpleadoService {
         this.repositorio = repositorio;
     }
     
-    public Empleado registrar(String nombre, String dni, String direccion, String telefono) {
-        Empleado emp = new Empleado();
-        
-        emp.setNombre(nombre);
-        emp.setDni(dni);
-        emp.setDireccion(direccion);
-        emp.setTelefono(telefono);
-        emp.setEstado(true);
-        
-        return repositorio.save(emp);
+//    public Empleado registrar(String nombre, String dni, String direccion, String telefono) {
+//        Empleado emp = new Empleado();
+//        
+//        emp.setNombre(nombre);
+//        emp.setDni(dni);
+//        emp.setDireccion(direccion);
+//        emp.setTelefono(telefono);
+//        emp.setEstado(true);
+//        
+//        return repositorio.save(emp);
+//    }
+    
+    public void registrar(Empleado empleado) {
+        empleado.setEstado(true);
+        repositorio.save(empleado);
     }
     
-    public List<Empleado> listar() {
+    public List<Empleado> listarActivos() {
         return repositorio.listarActivos();
+    }
+    
+    public List<Empleado> listarTodos() {
+        return repositorio.findAll();
     }
     
     public Empleado editar(Empleado emp) {

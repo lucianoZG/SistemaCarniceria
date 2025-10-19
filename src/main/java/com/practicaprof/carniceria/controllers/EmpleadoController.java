@@ -28,7 +28,7 @@ public class EmpleadoController {
     //Listar empleados
     @GetMapping
     public String listar(Model model) {
-        List<Empleado> listaEmpleados = servicio.listar();
+        List<Empleado> listaEmpleados = servicio.listarTodos();
         model.addAttribute("empleados", listaEmpleados);
         return "/empleados/empleados";
     }
@@ -42,7 +42,8 @@ public class EmpleadoController {
 
     @PostMapping
     public String registrar(@ModelAttribute("empleado") Empleado empleado) {
-        servicio.registrar(empleado.getNombre(), empleado.getDni(), empleado.getDireccion(), empleado.getTelefono());
+//        servicio.registrar(empleado.getNombre(), empleado.getDni(), empleado.getDireccion(), empleado.getTelefono());
+        servicio.registrar(empleado);
         return "redirect:/empleados";
     }
     

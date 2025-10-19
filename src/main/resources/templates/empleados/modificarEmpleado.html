@@ -10,7 +10,7 @@
         <div th:replace="fragments/navbar :: navbar('empleados')"></div>
 
         <div class="container mt-5">
-            <h2 class="mb-4 text-center">Registrar Empleado</h2>
+            <h2 class="mb-4 text-center">Editar Empleado</h2>
 
             <form th:action="@{/empleados/editar/{id}(id=${empleado.id})}" th:object="${empleado}" method="post" class="card p-4 shadow-sm">
 
