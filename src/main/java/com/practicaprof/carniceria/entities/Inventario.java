@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,30 +18,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Producto {
+public class Inventario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "proId")
+    @Column(name = "invId")
     private int id;
 
-    @Column(name = "proDescripcion")
-    private String descripcion;
+    @Column(name = "invStockRelevado")
+    private double stockRelevado;
 
-    @Column(name = "proPrecioUnitario")
-    private double precioUnitario;
+    @Column(name = "invFecha")
+    private LocalDateTime fecha;
 
-    @Column(name = "proCantidad")
-    private double cantidad;
-
-    @Column(name = "proEstado", nullable = false)
-    private boolean estado = true;
-
-    //Relacion con inventario
-    @OneToMany(mappedBy = "producto")
+    //Relacion con producto
+    @OneToMany(mappedBy = "inventario")
     private List<ProductoInventario> productoInventarios;
-    
-    //Relacion con ventaDetalle
-    @OneToMany(mappedBy = "producto")
-    private List<VentaDetalle> listaVentaDetalle;
+
 }

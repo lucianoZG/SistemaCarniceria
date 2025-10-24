@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
@@ -51,6 +52,9 @@ public class Usuario implements UserDetails{
     @Column(name = "usEstado")
     private boolean estado;
 
+    //Relacion con ventas
+    @OneToMany(mappedBy = "usuario")
+    private List<Venta> listaVentas;
     
     // Métodos de la interfaz UserDetails
 
