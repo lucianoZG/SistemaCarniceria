@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.practicaprof.carniceria.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,8 +35,8 @@ public class Venta {
     @Column(name = "venPrecioTotal")
     private double precioTotal;
     
-    @Column(name = "venNroFactura")
-    private int nroFactura;
+    @Column(name = "venNroFactura", length = 50)
+    private String nroFactura;
     
     //Relaciones
     @ManyToOne
@@ -50,7 +48,7 @@ public class Venta {
     private Empleado empleado;
     
     //Relacion con ventaDetalle
-    @OneToMany(mappedBy = "venta")
-    private List<VentaDetalle> listaVentaDetalle;
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VentaDetalle> listaVentaDetalle = new ArrayList<>();
     
 }

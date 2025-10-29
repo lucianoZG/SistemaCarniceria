@@ -30,9 +30,6 @@ public class Producto {
     @Column(name = "proPrecioUnitario")
     private double precioUnitario;
 
-    @Column(name = "proCantidad")
-    private double cantidad;
-
     @Column(name = "proEstado", nullable = false)
     private boolean estado = true;
 

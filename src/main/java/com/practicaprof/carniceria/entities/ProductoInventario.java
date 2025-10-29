@@ -35,11 +35,15 @@ public class ProductoInventario {
 
     @Column(name = "proInvStockActual")
     private double stockActual;
+    
+    @Column(name = "proInvStockRelevado")
+    private double stockRelevado;
 
-    public ProductoInventario(Producto producto, Inventario inventario, double stockActual) {
+    public ProductoInventario(Producto producto, Inventario inventario, double stockActual, double stockRelevado) {
         this.producto = producto;
         this.inventario = inventario;
         this.stockActual = stockActual;
+        this.stockRelevado = stockRelevado;
     }
     
 }

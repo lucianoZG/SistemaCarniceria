@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Registrar venta</title>
+        <meta charset="UTF-8">
+        <!--<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body class="d-flex flex-column min-vh-100 bg-light">
+        <div th:replace="fragments/navbar :: navbar('ventas')"></div>
+
+        <div class="container mt-4">
+            <h2 class="text-center mb-4">Registrar Venta</h2>
+
+            <form th:action="@{/ventas/registrar}" th:object="${venta}" method="post" id="ventaForm">
+
+                <div class="mb-3">
+                    <label class="form-label">Empleado</label>
+                    <select class="form-select" th:field="*{empleado}">
+                        <option th:each="emp : ${empleados}" th:value="${emp.id}" th:text="${emp.nombre}"></option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Usuario</label>
+                    <select class="form-select" th:field="*{usuario}">
+                        <option th:each="us : ${usuarios}" th:value="${us.id}" th:text="${us.username}"></option>
+                    </select>
+                </div>
+
+                <h5>Agregar Productos</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <select class="form-select" id="productoSelect">
+                            <option th:each="prod : ${productos}" 
+                                    th:value="${prod.id}" 
+                                    th:data-precio="${prod.precioUnitario}" 
+                                    th:text="${prod.descripcion}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" id="cantidadInput" class="form-control" placeholder="Cantidad" min="1" step="0.1">
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-success w-100" onclick="agregarProducto()">Agregar</button>
+                    </div>
+                </div>
+
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unit.</th>
+                            <th>Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="detalleTable"></tbody>
+                </table>
+
+                <div class="text-end">
+                    <h5>Total: $<span id="totalVenta">0.00</span></h5>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">Registrar Venta</button>
+            </form>
+        </div>
+
+
+        <script>
+            let total = 0;
+
+            function agregarProducto() {
+                const select = document.getElementById('productoSelect');
+                const cantidad = parseFloat(document.getElementById('cantidadInput').value);
+                const precio = parseFloat(select.options[select.selectedIndex].dataset.precio);
+                const descripcion = select.options[select.selectedIndex].text;
+
+                if (!cantidad || cantidad <= 0)
+                    return alert('Ingrese una cantidad válida.');
+
+                const subtotal = precio * cantidad;
+                total += subtotal;
+                document.getElementById('totalVenta').textContent = total.toFixed(2);
+
+                const tabla = document.getElementById('detalleTable');
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${descripcion}</td>
+                    <td>${cantidad}</td>
+                    <td>${precio.toFixed(2)}</td>
+                    <td>${subtotal.toFixed(2)}</td>
+                    
+                    <td><button type="button" class="btn btn-danger btn-sm" onclick="this.closest('tr').remove(); actualizarTotal();">Quitar</button></td>
+                    <input type="hidden" name="listaVentaDetalle[${tabla.rows.length}].producto.id" value="${select.value}" />
+                    <input type="hidden" name="listaVentaDetalle[${tabla.rows.length}].totalCantidad" value="${cantidad}" />
+                    <input type="hidden" name="listaVentaDetalle[${tabla.rows.length}].precioUnitActual" value="${precio}" />
+                `;
+                tabla.appendChild(fila);
+
+                // Actualizar total en un input oculto
+                let totalInput = document.getElementById('totalInput');
+                if (!totalInput) {
+                    totalInput = document.createElement('input');
+                    totalInput.type = 'hidden';
+                    totalInput.id = 'totalInput';
+                    totalInput.name = 'precioTotal';
+                    document.getElementById('ventaForm').appendChild(totalInput);
+                }
+                totalInput.value = total.toFixed(2);
+            }
+
+            function actualizarTotal() {
+                total = 0;
+                const filas = document.querySelectorAll('#detalleTable tr');
+                filas.forEach(fila => {
+                    const subtotal = parseFloat(fila.cells[3].textContent);
+                    total += subtotal;
+                });
+                document.getElementById('totalVenta').textContent = total.toFixed(2);
+                document.getElementById('totalInput').value = total.toFixed(2);
+            }
+        </script>
+        
+        <footer class="mt-auto">
+            <div th:replace="fragments/footer :: footer"></div>
+        </footer>
+    </body>
+</html>

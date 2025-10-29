@@ -14,25 +14,53 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/productos")
 public class ProductoController {
-    
+
     private ProductoService servicio;
 
     public ProductoController(ProductoService servicio) {
         this.servicio = servicio;
     }
-    
-    //Listar empleados
+
+    //Listar productos
     @GetMapping
-    public String listar(Model model) {
-        List<Producto> listaEmpleados = servicio.listarTodos();
-        model.addAttribute("productos", listaEmpleados);
+    public String listar(@RequestParam(value = "estado", required = false, defaultValue = "activos") String estado,
+            @RequestParam(value = "busqueda", required = false) String busqueda, Model model) {
+//        List<Producto> listaProductos = servicio.listarTodos();
+        List<Producto> listaProductos;
+
+        if (busqueda != null && !busqueda.trim().isEmpty()) {
+            // Buscar por texto y estado
+            switch (estado.toLowerCase()) {
+                case "inactivos":
+                    listaProductos = servicio.buscarPorDescripcionOCodigoYEstado(busqueda, false);
+                    break;
+                case "todos":
+                    listaProductos = servicio.buscarPorDescripcionOCodigo(busqueda);
+                    break;
+                default:
+                    listaProductos = servicio.buscarPorDescripcionOCodigoYEstado(busqueda, true);
+                    break;
+            }
+        } else {
+            if ("inactivos".equalsIgnoreCase(estado)) {
+                listaProductos = servicio.listarInactivos();
+            } else {
+                listaProductos = servicio.listarActivos();
+            }
+        }
+
+        model.addAttribute("productos", listaProductos);
+        model.addAttribute("estado", estado);
+        model.addAttribute("busqueda", busqueda);
+        
         return "/productos/productos";
     }
-    
+
     //Registrar producto
     @GetMapping("/registrarProducto")
     public String mostrarFormularioRegistro(Model model) {
@@ -46,7 +74,7 @@ public class ProductoController {
         servicio.registrarProducto(producto);
         return "redirect:/productos";
     }
-    
+
     //Editar empleado
     @GetMapping("/editar/{id}")
     public String mostrarFormularioModificar(@PathVariable int id, Model model) {
@@ -60,7 +88,7 @@ public class ProductoController {
         servicio.editar(producto);
         return "redirect:/productos";
     }
-    
+
     //Dar de baja producto
     @GetMapping("/baja/{id}")
     public String darDeBaja(@PathVariable int id) {

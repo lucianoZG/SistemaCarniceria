@@ -25,9 +25,6 @@ public class Inventario {
     @Column(name = "invId")
     private int id;
 
-    @Column(name = "invStockRelevado")
-    private double stockRelevado;
-
     @Column(name = "invFecha")
     private LocalDateTime fecha;
 

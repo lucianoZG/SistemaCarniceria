@@ -19,8 +19,12 @@
                    th:href="@{/empleados}">Empleados</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" th:classappend="${activePage == 'inventarios'} ? 'active fw-semibold bg-light rounded px-3' : ''"
+                   th:href="@{/inventarios}">Inventario</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" th:classappend="${activePage == 'informes'} ? 'active fw-semibold bg-light rounded px-3' : ''"
-                   th:href="@{/informes}">Informes</a>
+                   th:href="@{/informes/stock}">Informes</a>
             </li>
         </ul>
 

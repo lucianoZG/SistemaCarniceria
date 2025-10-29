@@ -2,6 +2,7 @@ package com.practicaprof.carniceria.services;
 
 import com.practicaprof.carniceria.entities.Usuario;
 import com.practicaprof.carniceria.repositories.UsuarioRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,15 @@ public class UsuarioService {
             usuario.setEstado(true);
             repo.save(usuario);
         });
+    }
+    
+    public List<Usuario> listarActivos() {
+        return repo.listarActivos();
+    }
+    
+    public Usuario obtenerPorId(int id) {
+        Optional<Usuario> us = repo.findById(id);
+        Usuario usuario = us.get();
+        return usuario;
     }
 }
