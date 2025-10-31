@@ -5,13 +5,18 @@
 package com.practicaprof.carniceria.controllers;
 
 import com.practicaprof.carniceria.entities.Empleado;
+import com.practicaprof.carniceria.entities.ProductoInventario;
 import com.practicaprof.carniceria.entities.Usuario;
 import com.practicaprof.carniceria.entities.Venta;
+import com.practicaprof.carniceria.entities.VentaDetalle;
 import com.practicaprof.carniceria.services.EmpleadoService;
+import com.practicaprof.carniceria.services.ProductoInventarioService;
 import com.practicaprof.carniceria.services.ProductoService;
 import com.practicaprof.carniceria.services.UsuarioService;
 import com.practicaprof.carniceria.services.VentaService;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +24,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/ventas")
@@ -28,12 +35,14 @@ public class VentaController {
     private EmpleadoService empleadoServicio;
     private ProductoService productoServicio;
     private UsuarioService usuarioServicio;
+    private ProductoInventarioService productoInventarioServicio;
 
-    public VentaController(VentaService ventaServicio, EmpleadoService empleadoServicio, ProductoService productoServicio, UsuarioService usuarioServicio) {
+    public VentaController(VentaService ventaServicio, EmpleadoService empleadoServicio, ProductoService productoServicio, UsuarioService usuarioServicio, ProductoInventarioService productoInventarioServicio) {
         this.ventaServicio = ventaServicio;
         this.empleadoServicio = empleadoServicio;
         this.productoServicio = productoServicio;
         this.usuarioServicio = usuarioServicio;
+        this.productoInventarioServicio = productoInventarioServicio;
     }
 
     //Listar ventas
@@ -54,15 +63,28 @@ public class VentaController {
     }
 
     @PostMapping("/registrar")
-    public String registrar(@ModelAttribute("venta") Venta venta) {
+    public String registrar(@ModelAttribute("venta") Venta venta, Model model) {
         // Buscar el empleado desde la BD, según su ID
         Empleado empleado = empleadoServicio.obtenerPorId(venta.getEmpleado().getId());
         venta.setEmpleado(empleado);
-        
+
         Usuario usuario = usuarioServicio.obtenerPorId(venta.getUsuario().getId());
         venta.setUsuario(usuario);
-        
-        ventaServicio.registrarVenta(venta);
+
+        // Validar y registrar
+        String error = ventaServicio.registrarVenta(venta);
+
+        if (error != null) {
+            // Si hay error, volvemos al formulario con mensaje
+            model.addAttribute("error", error);
+            model.addAttribute("venta", venta);
+            model.addAttribute("empleados", empleadoServicio.listarActivos());
+            model.addAttribute("usuarios", usuarioServicio.listarActivos());
+            model.addAttribute("productos", productoServicio.listarActivos());
+            return "ventas/registrarVenta";
+        }
+
+//        ventaServicio.registrarVenta(venta);
         return "redirect:/ventas";
     }
 
@@ -79,4 +101,27 @@ public class VentaController {
         model.addAttribute("venta", venta);
         return "ventas/ventaDetalle";
     }
+
+    //Verificación para que al tocar en el botón de Agregar Producto se muestre si es hay algún error
+    @GetMapping("/verificarStock")
+    @ResponseBody
+    public ResponseEntity<String> verificarStock(
+            @RequestParam("productoId") int productoId,
+            @RequestParam("cantidad") double cantidad) {
+
+        Optional<ProductoInventario> optionalPI = productoInventarioServicio.findByProductoIdDelUltimoInventario(productoId);
+
+        if (optionalPI.isEmpty()) {
+            return ResponseEntity.badRequest().body("El producto no está en el último inventario o está inactivo.");
+        }
+
+        ProductoInventario pi = optionalPI.get();
+
+        if (cantidad > pi.getStockActual()) {
+            return ResponseEntity.badRequest().body("Stock insuficiente. Disponible: " + pi.getStockActual());
+        }
+
+        return ResponseEntity.ok("OK");
+    }
+
 }

@@ -2,6 +2,7 @@ package com.practicaprof.carniceria.controllers;
 
 import com.practicaprof.carniceria.entities.Usuario;
 import com.practicaprof.carniceria.services.UsuarioService;
+import com.practicaprof.carniceria.services.VentaDetalleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,8 @@ public class UsuarioController {
     
     @Autowired
     private UsuarioService servicio;
+//    @Autowired
+//    private VentaDetalleService vdServicio;
     
     @GetMapping("/login")
     public String login() {
@@ -34,8 +37,10 @@ public class UsuarioController {
         return "redirect:/login"; // después de registrarse lo mando al login
     }
     
-    @GetMapping("/index")
-    public String getIndex() {
-        return "index";
-    }
+//    @GetMapping("/index")
+//    public String getIndex(Model model) {
+//        String productoMasVendido = vdServicio.obtenerProductoMasVendido();
+//        model.addAttribute("productoMasVendido", productoMasVendido);
+//        return "index";
+//    }
 }

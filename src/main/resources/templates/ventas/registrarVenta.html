@@ -20,7 +20,7 @@
                         <option th:each="emp : ${empleados}" th:value="${emp.id}" th:text="${emp.nombre}"></option>
                     </select>
                 </div>
-                
+
                 <div class="mb-3">
                     <label class="form-label">Usuario</label>
                     <select class="form-select" th:field="*{usuario}">
@@ -43,8 +43,15 @@
                         <input type="number" id="cantidadInput" class="form-control" placeholder="Cantidad" min="1" step="0.1">
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-success w-100" onclick="agregarProducto()">Agregar</button>
+                        <button type="button" class="btn btn-success w-100" onclick="verificarStockAntesDeAgregar()">Agregar</button>
                     </div>
+                </div>
+
+                <!--<div id="mensajeError" th:if="${error}" class="alert alert-danger mt-2" th:text="${error}"></div>-->
+
+                <div id="mensajeError"
+                     class="alert alert-danger mt-2"
+                     style="display:none;">
                 </div>
 
                 <table class="table table-bordered mt-3">
@@ -71,6 +78,48 @@
 
         <script>
             let total = 0;
+
+            function verificarStockAntesDeAgregar() {
+                const select = document.getElementById("productoSelect");
+                const productoId = select.value;
+                const cantidad = parseFloat(document.getElementById("cantidadInput").value);
+
+                if (!cantidad || cantidad <= 0) {
+                    mostrarError("Ingrese una cantidad válida.");
+                    return;
+                }
+
+                // ✅ Llamada AJAX al endpoint de verificación
+                fetch(`/ventas/verificarStock?productoId=${productoId}&cantidad=${cantidad}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.text().then(msg => {
+                                    throw new Error(msg);
+                                });
+                            }
+                            return response.text();
+                        })
+                        .then(() => {
+                            ocultarError();
+                            agregarProducto(); // Solo se agrega si pasa la verificación
+                        })
+                        .catch(error => {
+                            mostrarError(error.message);
+                        });
+            }
+
+            function mostrarError(mensaje) {
+                const div = document.getElementById("mensajeError");
+                div.innerText = mensaje;
+                div.style.display = "block";
+            }
+
+            function ocultarError() {
+                const div = document.getElementById("mensajeError");
+                div.style.display = "none";
+            }
+
+
 
             function agregarProducto() {
                 const select = document.getElementById('productoSelect');
@@ -123,7 +172,7 @@
                 document.getElementById('totalInput').value = total.toFixed(2);
             }
         </script>
-        
+
         <footer class="mt-auto">
             <div th:replace="fragments/footer :: footer"></div>
         </footer>

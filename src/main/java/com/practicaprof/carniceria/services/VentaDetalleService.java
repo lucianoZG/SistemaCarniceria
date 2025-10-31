@@ -32,4 +32,18 @@ public class VentaDetalleService {
     public void eliminar(int id) {
         repositorio.deleteById(id);
     }
+    
+    public String obtenerProductoMasVendido() {
+        Object resultado = repositorio.obtenerProductoMasVendidoUltimoMes();
+
+        if (resultado == null) {
+            return "No hay ventas registradas este mes";
+        }
+
+        Object[] fila = (Object[]) resultado;
+        String nombre = (String) fila[0];
+        Double total = ((Number) fila[1]).doubleValue();
+
+        return nombre + " (" + total + " kg vendidos)";
+    }
 }

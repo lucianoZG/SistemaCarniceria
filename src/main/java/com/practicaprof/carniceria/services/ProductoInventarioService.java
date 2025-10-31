@@ -5,6 +5,8 @@ import com.practicaprof.carniceria.entities.Producto;
 import com.practicaprof.carniceria.entities.ProductoInventario;
 import com.practicaprof.carniceria.repositories.ProductoInventarioRepository;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,4 +27,29 @@ public class ProductoInventarioService {
         return productoInventarioRepo.listarDelUltimoInventario();
     }
     
+    public void registrarStock(ProductoInventario pi) {
+        productoInventarioRepo.save(pi);
+    }
+    
+    public Optional<ProductoInventario> findByProductoIdDelUltimoInventario(@Param("productoId") int productoId) {
+        return productoInventarioRepo.findByProductoIdDelUltimoInventario(productoId);
+    }
+    
+    public ProductoInventario findByProductoId(int productoId) {
+        return productoInventarioRepo.findByProductoId(productoId).get();
+    }
+    
+    public String obtenerProductoConMenorStock() {
+        Object resultado = productoInventarioRepo.obtenerProductoConMenorStock();
+
+        if (resultado == null) {
+            return "Sin datos de inventario disponibles";
+        }
+
+        Object[] fila = (Object[]) resultado;
+        String nombre = (String) fila[0];
+        Double stock = ((Number) fila[1]).doubleValue();
+
+        return nombre + " (" + stock + " kg disponibles)";
+    }
 }

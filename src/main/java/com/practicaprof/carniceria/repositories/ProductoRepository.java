@@ -16,13 +16,13 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     @Query("SELECT p FROM Producto p WHERE p.estado = false")
     List<Producto> listarInactivos();
 
-    // Buscar por descripción o ID convertido a string
+    // Buscar por descripción o ID convertido a string, se puede simplificar pasando solo un texto.
     @Query("SELECT p FROM Producto p WHERE "
             + "LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :texto, '%')) "
             + "OR CAST(p.id AS string) LIKE CONCAT('%', :texto, '%')")
     List<Producto> findByDescripcionContainingIgnoreCaseOrIdAsString(@Param("texto") String texto, @Param("texto") String texto2);
 
-    // Igual pero filtrando por estado
+    // Igual pero filtrando por estado, se puede simplificar pasando solo un texto.
     @Query("SELECT p FROM Producto p WHERE "
             + "((p.estado = :estado) AND (LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :texto, '%')) "
             + "OR CAST(p.id AS string) LIKE CONCAT('%', :texto, '%')))")

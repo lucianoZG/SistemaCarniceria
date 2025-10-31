@@ -28,33 +28,6 @@
     </head>
     <body class="d-flex flex-column min-vh-100">
 
-        <!-- NAVBAR 
-        <nav class="navbar navbar-expand-lg bg-white shadow-sm">
-            <div class="container-fluid px-4">
-                <a class="navbar-brand fw-bold text-danger" href="@{/index}">🍖 Carnicería JP</a>
-
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#">Ventas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Productos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Empleados</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Informes</a></li>
-                    </ul>
-                </div>
-
-        <!-- Usuario
-       <div class="d-flex align-items-center">
-           <div class="text-end me-2">
-               <small class="fw-semibold" th:text="${#authentication.name}">Admin</small><br>
-               <span class="badge bg-light text-secondary" th:text="${#authentication.authorities[0].authority}">admin</span>
-           </div>
-           <form th:action="@{/logout}" method="post" class="d-inline">
-               <button type="submit" class="btn btn-outline-danger btn-sm ms-2">Cerrar sesión</button>
-           </form>
-       </div>
-   </div>
-</nav> -->
-
         <!-- Navbar -->
         <div th:replace="fragments/navbar :: navbar('')"></div>
 
@@ -64,6 +37,44 @@
             <h5 class="fw-light">Sistema de Gestión Integral para Carnicería</h5>
             <p class="mt-3">Administra ventas, productos, empleados e informes desde un solo lugar</p>
         </section>
+
+        <!-- DASHBOARD DE ESTADÍSTICAS -->
+
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <!-- Producto más vendido del último mes -->
+                <div class="col-md-5">
+                    <div class="card shadow-sm border-0 text-center p-4" style="background-color:#fff3cd;">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-2 text-dark">📈 Producto más vendido (último mes)</h5>
+                            <h4 class="text-danger" th:text="${productoMasVendido}">Asado (320 kg vendidos)</h4>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Producto con menor stock -->
+                <div class="col-md-5">
+                    <div class="card shadow-sm border-0 text-center p-4" style="background-color:#fff3cd;">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-2 text-dark">📈 Producto con menor stock actual</h5>
+                            <h4 class="text-danger" th:text="${productoConMenorStock != null ? productoConMenorStock : 'Sin datos disponibles'}"></h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ganancias del dia -->
+                <div class="col-md-5 mt-4">
+                    <div class="card shadow-sm border-0 text-center p-4" style="background-color:#fff3cd;">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-2 text-dark">📈 Ganancias del dia</h5>
+                            <h4 class="text-danger" th:text="${gananciasDelDia + ' $'}"></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- FEATURES -->
         <div class="container py-5">
@@ -102,6 +113,16 @@
                 <div class="col-md-3">
                     <div class="card feature-card text-center border-0 shadow-sm">
                         <div class="card-body">
+                            <div class="fs-1 text-dark mb-3">📋</div>
+                            <h5 class="fw-bold">Inventario</h5>
+                            <p class="text-muted small">Gestiona el stock de productos del local</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mt-4">
+                    <div class="card feature-card text-center border-0 shadow-sm">
+                        <div class="card-body">
                             <div class="fs-1 text-dark mb-3">📊</div>
                             <h5 class="fw-bold">Informes</h5>
                             <p class="text-muted small">Consulta estadísticas y reportes detallados</p>
@@ -110,16 +131,11 @@
                 </div>
 
             </div>
+            
         </div>
-        
+
         <!-- Agregar dashboard, metrica en modo admin (corte de carne más vendido en el último mes), datos que puedan ir cambiando dinamicamente-->
 
-        <!-- FOOTER -->
-        <!--<footer>
-            <div class="container text-center">
-                <small>© <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2025</span> Carnicería Sistema — Todos los derechos reservados.</small>
-            </div>
-        </footer> -->
 
         <div th:replace="fragments/footer :: footer"></div>
 
