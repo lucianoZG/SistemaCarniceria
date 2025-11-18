@@ -16,16 +16,19 @@
                 padding: 5px;
                 margin-bottom: 20px;
             }
-            .tab-buttons button {
+            .tab-buttons a {
                 flex: 1;
                 border: none;
                 background: none;
                 padding: 10px;
                 border-radius: 20px;
                 font-weight: 500;
+                text-align: center;
+                text-decoration: none;
+                color: #000;
                 transition: background-color 0.2s;
             }
-            .tab-buttons button:hover {
+            .tab-buttons a:hover {
                 background-color: #e5e5e5;
             }
             .tab-buttons .active {
@@ -63,6 +66,10 @@
                 <a th:href="@{/empleados/registrarEmpleado}" class="btn btn-light">Alta de Empleado</a>
             </div>
 
+            <!-- Mensaje si no hay productos -->
+            <div th:if="${#lists.isEmpty(empleados)}" class="alert alert-info text-center">
+                No hay empleados registrados aún.
+            </div>
 
             <!-- Tabla -->
             <div class="table-container">

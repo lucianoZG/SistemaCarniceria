@@ -13,10 +13,12 @@ public class ProductoService {
 
     private final ProductoRepository repositorio;
     private final ProductoInventarioRepository proInvRepo;
+    private final ProductoInventarioService proInvServicio;
 
-    public ProductoService(ProductoRepository repositorio, ProductoInventarioRepository proInvRepo) {
+    public ProductoService(ProductoRepository repositorio, ProductoInventarioRepository proInvRepo, ProductoInventarioService productoInventarioService) {
         this.repositorio = repositorio;
         this.proInvRepo = proInvRepo;
+        this.proInvServicio = productoInventarioService;
     }
 
 //    public Producto registrarProducto(String descripcion, double precio, double cantidad) {
@@ -116,5 +118,27 @@ public class ProductoService {
                 .stream()
                 .filter(pi -> pi.getStockActual() > 0) // solo los que tienen stock > 0
                 .toList();
+    }
+
+    public List<Producto> listarDisponiblesParaVenta() {
+        int ultimoInventarioId = proInvServicio.obtenerIdDelUltimoInventario();
+        List<Producto> productos = repositorio.findProductosConStockDisponible(ultimoInventarioId);
+
+        //Implementar que al estar inactivo el producto, su stock sea 0.
+//        for (Producto p : productos) {
+//            ProductoInventario pi = proInvRepo.findByProductoAndInventario(p, ultimoInventarioId);
+//            if (!p.isEstado()) {
+//                pi.setStockActual(0);
+//            }
+//        }
+
+        return productos;
+    }
+    
+    public List<Producto> listarProductosUltimoInventario() {
+        int ultimoInventarioId = proInvServicio.obtenerIdDelUltimoInventario();
+        List<Producto> productos = repositorio.findProductosUltimoInventario(ultimoInventarioId);
+        
+        return productos;
     }
 }

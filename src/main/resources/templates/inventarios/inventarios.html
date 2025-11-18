@@ -98,15 +98,15 @@
                                         <thead>
                                             <tr>
                                                 <th>Producto</th>
-                                                <th>Stock Relevado</th>
                                                 <th>Stock Actual</th>
+                                                <th>Stock Relevado</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr th:each="pi : ${inv.productoInventarios}">
                                                 <td th:text="${pi.producto.descripcion}"></td>
-                                                <td th:text="${pi.stockRelevado}"></td>
                                                 <td th:text="${pi.stockActual}"></td>
+                                                <td th:text="${pi.stockRelevado}"></td>
                                             </tr>
                                         </tbody>
                                     </table>

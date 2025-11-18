@@ -40,13 +40,23 @@ public class InventarioService {
             Producto producto = productoRepository.findById(productosId.get(i))
                     .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
+            double stockActualSistema = producto.getStock();
+            double stockRelevado = stocksRelevados.get(i); 
+            
             ProductoInventario pi = new ProductoInventario();
             pi.setProducto(producto);
-            pi.setStockRelevado(stocksRelevados.get(i));
-            pi.setStockActual(stocksRelevados.get(i));
+            pi.setStockRelevado(stockRelevado);
+            //pi.setStockActual(stocksRelevados.get(i));
+            pi.setStockActual(stockActualSistema);
             pi.setInventario(inventario);
 
             lista.add(pi);
+            
+            //️ Si el stock relevado es distinto al actual, se actualiza el producto
+            if (stockActualSistema != stockRelevado) {
+                producto.setStock(stockRelevado);
+                productoRepository.save(producto);
+            }
         }
 
         productoInventarioRepository.saveAll(lista);

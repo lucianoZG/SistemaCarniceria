@@ -50,6 +50,7 @@
             <div class="tab-buttons">
                 <a th:href="@{/informes/stock}" class="active">Informes de Stock</a>
                 <a th:href="@{/informes/consultaVentas}">Consultas de Ventas</a>
+                <a th:href="@{/informes/ganancias}">Informe de Ganancias</a>
             </div>
 
             <!-- Tabla de stock -->
@@ -81,8 +82,8 @@
                                 <td th:text="${pi.producto.id}"></td>
                                 <td th:text="${pi.producto.descripcion}"></td>
                                 <td th:text="${#numbers.formatDecimal(pi.producto.precioUnitario, 1, 'COMMA', 0, 'POINT')}"></td>
-                                <td th:text="${pi.stockActual}"></td>
-                                <td th:text="${#numbers.formatDecimal(pi.producto.precioUnitario * pi.stockActual, 1, 'COMMA', 0, 'POINT')}"></td>
+                                <td th:text="${pi.producto.stock}"></td>
+                                <td th:text="${#numbers.formatDecimal(pi.producto.precioUnitario * pi.producto.stock, 1, 'COMMA', 0, 'POINT')}"></td>
                             </tr>
                         </tbody>
                     </table>

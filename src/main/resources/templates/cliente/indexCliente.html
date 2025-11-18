@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Carnicería Sistema</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1998/1998571.png" type="image/png">
+        <style>
+            body {
+                background-color: #f8f9fa;
+            }
+            .hero-section {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                position: relative;
+                background-image: url('https://images.unsplash.com/photo-1611038333075-2efd28705f42?q=80&w=1249&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+
+                /* Altura y alineación */
+                padding: 100px 20px;
+                color: white;
+                text-align: center;
+                min-height: 60vh;
+
+                /* Para que el overlay quede encima */
+                overflow: hidden;
+            }
+
+            /* Capa de sombreado encima de la imagen */
+            .hero-section::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+
+                /* Sombreado elegante */
+                background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9));
+
+                /* Puedes ajustar la opacidad */
+                z-index: 1;
+            }
+
+            /* Que el contenido quede arriba del sombreado */
+            .hero-section > * {
+                position: relative;
+                z-index: 2;
+            }
+
+            /* Animación suave para el héroe */
+            .hero-content {
+                opacity: 0;
+                transform: translateY(20px);
+                animation: fadeUp 1s ease-out forwards;
+                animation-delay: 0.2s;
+            }
+
+            @keyframes fadeUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .feature-card {
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            .feature-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+        </style>
+    </head>
+    <body class="d-flex flex-column min-vh-100">
+
+        <!-- Navbar -->
+        <div th:replace="fragments/navbarCliente :: navbar('')"></div>
+
+        <!-- HERO -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="fw-bold display-4 mb-3">¡Bienvenido!</h1>
+                <h5 class="fw-light">Sistema de Gestión Integral para Carnicería</h5>
+                <p class="mt-3">Realice su pedido online, con una gran variedad de productos</p>
+            </div>
+        </section>
+
+        <!-- FEATURES -->
+        <div class="container py-5">
+            <div class="row g-4 justify-content-center">
+
+                <div class="col-md-3">
+                    <a th:href="@{/cliente/compras}" class="text-decoration-none text-dark">
+                        <div class="card feature-card text-center border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="fs-1 text-dark mb-3">💵</div>
+                                <h5 class="fw-bold">Compras</h5>
+                                <p class="text-muted small">Revisa los productos disponibles y compralos de manera online</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-3">
+                    <a th:href="@{/cliente/contacto}" class="text-decoration-none text-dark">
+                        <div class="card feature-card text-center border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="fs-1 text-dark mb-3">👥</div>
+                                <h5 class="fw-bold">Contacto</h5>
+                                <p class="text-muted small">Contactanos para cualquier duda o sugerencia</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="fragments/footer :: footer"></div>
+
+    </body>
+</html>

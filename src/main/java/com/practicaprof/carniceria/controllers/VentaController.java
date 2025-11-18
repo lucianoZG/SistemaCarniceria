@@ -5,6 +5,7 @@
 package com.practicaprof.carniceria.controllers;
 
 import com.practicaprof.carniceria.entities.Empleado;
+import com.practicaprof.carniceria.entities.Producto;
 import com.practicaprof.carniceria.entities.ProductoInventario;
 import com.practicaprof.carniceria.entities.Usuario;
 import com.practicaprof.carniceria.entities.Venta;
@@ -57,8 +58,8 @@ public class VentaController {
     public String mostrarFormulario(Model model) {
         model.addAttribute("venta", new Venta());
         model.addAttribute("empleados", empleadoServicio.listarActivos());
-        model.addAttribute("usuarios", usuarioServicio.listarActivos());
-        model.addAttribute("productos", productoServicio.listarActivos());
+        model.addAttribute("usuarios", usuarioServicio.listarClientesActivos());
+        model.addAttribute("productos", productoServicio.listarDisponiblesParaVenta());
         return "ventas/registrarVenta";
     }
 
@@ -80,7 +81,7 @@ public class VentaController {
             model.addAttribute("venta", venta);
             model.addAttribute("empleados", empleadoServicio.listarActivos());
             model.addAttribute("usuarios", usuarioServicio.listarActivos());
-            model.addAttribute("productos", productoServicio.listarActivos());
+            model.addAttribute("productos", productoServicio.listarDisponiblesParaVenta());
             return "ventas/registrarVenta";
         }
 
@@ -115,10 +116,12 @@ public class VentaController {
             return ResponseEntity.badRequest().body("El producto no está en el último inventario o está inactivo.");
         }
 
-        ProductoInventario pi = optionalPI.get();
+//        ProductoInventario pi = optionalPI.get();
 
-        if (cantidad > pi.getStockActual()) {
-            return ResponseEntity.badRequest().body("Stock insuficiente. Disponible: " + pi.getStockActual());
+        Producto producto = productoServicio.obtenerPorId(productoId);
+
+        if (cantidad > producto.getStock()) {
+            return ResponseEntity.badRequest().body("Stock insuficiente. Disponible: " + producto.getStock());
         }
 
         return ResponseEntity.ok("OK");

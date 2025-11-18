@@ -46,4 +46,8 @@ public class VentaDetalleService {
 
         return nombre + " (" + total + " kg vendidos)";
     }
+    
+    public List<VentaDetalle> findByProductoId(int productoId) {
+        return repositorio.findByProductoId(productoId);
+    }
 }

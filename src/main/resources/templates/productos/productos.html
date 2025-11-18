@@ -16,16 +16,19 @@
                 padding: 5px;
                 margin-bottom: 20px;
             }
-            .tab-buttons button {
+            .tab-buttons a {
                 flex: 1;
                 border: none;
                 background: none;
                 padding: 10px;
                 border-radius: 20px;
                 font-weight: 500;
+                text-align: center;
+                text-decoration: none;
+                color: #000;
                 transition: background-color 0.2s;
             }
-            .tab-buttons button:hover {
+            .tab-buttons a:hover {
                 background-color: #e5e5e5;
             }
             .tab-buttons .active {
@@ -96,7 +99,7 @@
                 </div>
 
 
-                <!-- Tabla de empleados -->
+                <!-- Tabla de productos -->
                 <div class="table-responsive">
                     <table class="table align-middle">
                         <thead>
@@ -104,6 +107,8 @@
                                 <th>Código</th>
                                 <th>Descripción</th>
                                 <th>Precio unitario</th>
+                                <th>Precio de costo</th>
+                                <th>Stock</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
@@ -113,6 +118,9 @@
                                 <td th:text="${producto.id}"></td>
                                 <td th:text="${producto.descripcion}"></td>
                                 <td th:text="${producto.precioUnitario}"></td>
+                                <td th:text="${producto.precioCosto}"></td>
+                                <td th:text="${producto.stock}"></td>
+                                
                                 <td>
                                     <span th:classappend="${producto.estado} ? 'badge badge-activo' : 'badge badge-inactivo'"
                                           th:text="${producto.estado} ? 'Activo' : 'Inactivo'">

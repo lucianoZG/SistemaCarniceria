@@ -51,6 +51,10 @@ public class UsuarioService {
         return repo.listarActivos();
     }
     
+    public List<Usuario> listarClientesActivos() {
+        return repo.listarClientesActivos();
+    }
+    
     public Usuario obtenerPorId(int id) {
         Optional<Usuario> us = repo.findById(id);
         Usuario usuario = us.get();

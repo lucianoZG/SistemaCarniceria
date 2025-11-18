@@ -33,6 +33,8 @@ public class VentaDetalle {
     @Column(name = "detPrecioUnitActual")
     private double precioUnitActual;
     
+    @Column(name = "detPrecioCostoActual")
+    private double precioCostoActual;
     //Relaciones
     @ManyToOne
     @JoinColumn(name = "venId")

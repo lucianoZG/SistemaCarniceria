@@ -15,9 +15,11 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     
     private final UserDetailsServiceImpl userDetailsService;
+    private final CustomSuccessHandler customSuccessHandler;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, CustomSuccessHandler customSuccessHandler) {
         this.userDetailsService = userDetailsService;
+        this.customSuccessHandler = customSuccessHandler;
     }
 
     @Bean
@@ -30,7 +32,8 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                 .loginPage("/login") // podés definir tu propio controlador/vista
-                .defaultSuccessUrl("/index", true)
+//                .defaultSuccessUrl("/index", true)
+                .successHandler(customSuccessHandler)
                 .permitAll()
                 )
                 .logout(logout -> logout.permitAll())

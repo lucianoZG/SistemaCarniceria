@@ -1,5 +1,6 @@
 package com.practicaprof.carniceria.services;
 
+import com.practicaprof.carniceria.entities.Producto;
 import com.practicaprof.carniceria.entities.ProductoInventario;
 import com.practicaprof.carniceria.entities.Usuario;
 import com.practicaprof.carniceria.entities.Venta;
@@ -15,10 +16,12 @@ public class VentaService {
 
     private final VentaRepository repositorio;
     private final ProductoInventarioService productoInventarioServicio;
+    private final ProductoService productoServicio;
 
-    public VentaService(VentaRepository repositorio, ProductoInventarioService productoInventarioServicio) {
+    public VentaService(VentaRepository repositorio, ProductoInventarioService productoInventarioServicio, ProductoService productoServicio) {
         this.repositorio = repositorio;
         this.productoInventarioServicio = productoInventarioServicio;
+        this.productoServicio = productoServicio;
     }
 
     public List<Venta> listarVentas() {
@@ -32,23 +35,30 @@ public class VentaService {
 
             // Buscar stock actual
             Optional<ProductoInventario> optionalInventario = productoInventarioServicio.findByProductoIdDelUltimoInventario(idProducto);
+            Producto producto = productoServicio.obtenerPorId(idProducto);
 
             if (optionalInventario.isEmpty()) {
                 return "El producto con ID " + idProducto + " no pertenece al último inventario o no está activo.";
             }
-            
-            ProductoInventario productoInv = optionalInventario.get();
 
+//            ProductoInventario productoInv = optionalInventario.get();
             // Validar stock
-            if (detalle.getTotalCantidad() > productoInv.getStockActual()) {
-                return "Stock insuficiente para el producto " + productoInv.getProducto().getDescripcion()
-                        + ". Disponible: " + productoInv.getStockActual()
+            if (detalle.getTotalCantidad() > producto.getStock()) {
+                return "Stock insuficiente para el producto " + producto.getDescripcion()
+                        + ". Disponible: " + producto.getStock()
                         + ", solicitado: " + detalle.getTotalCantidad();
             }
 
             // Descontar stock
-            productoInv.setStockActual(productoInv.getStockActual() - detalle.getTotalCantidad());
-            productoInventarioServicio.registrarStock(productoInv);
+//            productoInv.setStockActual(productoInv.getStockActual() - detalle.getTotalCantidad());
+//            productoInventarioServicio.registrarStock(productoInv);
+            detalle.setPrecioUnitActual(producto.getPrecioUnitario());
+            detalle.setPrecioCostoActual(producto.getPrecioCosto());
+//            System.out.println("Producto: " + producto.getDescripcion() + " | Costo: " + detalle.getPrecioCostoActual());
+            
+            
+            producto.setStock(producto.getStock() - detalle.getTotalCantidad());
+            productoServicio.registrarProducto(producto);
         }
 
         //Establecemos fecha y hora actuales
@@ -89,9 +99,27 @@ public class VentaService {
     public List<Venta> findByFechaHoraBetween(LocalDateTime desde, LocalDateTime hasta) {
         return repositorio.findByFechaHoraBetween(desde, hasta);
     }
-    
+
     public Double obtenerGananciasDelDia() {
         Double ganancias = repositorio.obtenerGananciasDelDia();
         return ganancias != null ? ganancias : 0.0;
     }
+
+    public String obtenerEmpleadoConMasVentasUltimoMes() {
+        LocalDateTime haceUnMes = LocalDateTime.now().minusMonths(1);
+        List<Object[]> resultados = repositorio.obtenerEmpleadoConMasVentasUltimoMes(haceUnMes);
+
+        if (resultados.isEmpty()) {
+            return "Sin datos disponibles";
+        }
+
+        Object[] fila = resultados.get(0); // solo tomamos la primera fila
+
+        String nombreEmpleado = fila[0].toString();
+        Number cantidadVentasNum = (Number) fila[1];
+        long cantidadVentas = cantidadVentasNum.longValue();
+
+        return nombreEmpleado + " (" + cantidadVentas + " ventas)";
+    }
+
 }

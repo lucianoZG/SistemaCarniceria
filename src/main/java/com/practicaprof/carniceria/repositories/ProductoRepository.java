@@ -30,6 +30,23 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
             @Param("texto") String texto1,
             @Param("estado") boolean estado2,
             @Param("texto") String texto2);
+
+    @Query("""
+        SELECT p 
+        FROM Producto p 
+        JOIN ProductoInventario pi ON pi.producto.id = p.id
+        WHERE p.estado = true
+        AND pi.inventario.id = :inventarioId
+        AND pi.stockActual > 0
+    """)
+    List<Producto> findProductosConStockDisponible(@Param("inventarioId") int inventarioId);
+    
+    @Query("""
+        SELECT p 
+        FROM Producto p 
+        JOIN ProductoInventario pi ON pi.producto.id = p.id
+        WHERE p.estado = true
+        AND pi.inventario.id = :inventarioId
+    """)
+    List<Producto> findProductosUltimoInventario(@Param("inventarioId") int inventarioId);
 }
-
-

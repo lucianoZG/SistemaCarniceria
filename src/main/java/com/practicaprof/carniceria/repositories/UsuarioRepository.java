@@ -22,4 +22,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
     
     @Query("SELECT u FROM Usuario u WHERE u.estado = true")
     List<Usuario> listarActivos();
+    
+    @Query("SELECT u FROM Usuario u WHERE u.estado = true AND u.rol = 'CLIENTE'")
+    List<Usuario> listarClientesActivos();
 }

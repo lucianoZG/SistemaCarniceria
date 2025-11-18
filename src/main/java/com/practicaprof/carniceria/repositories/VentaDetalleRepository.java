@@ -5,6 +5,7 @@
 package com.practicaprof.carniceria.repositories;
 
 import com.practicaprof.carniceria.entities.VentaDetalle;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,6 @@ public interface VentaDetalleRepository extends JpaRepository<VentaDetalle, Inte
         LIMIT 1
     """, nativeQuery = true)
     Object obtenerProductoMasVendidoUltimoMes();
+    
+    List<VentaDetalle> findByProductoId(int productoId);
 }

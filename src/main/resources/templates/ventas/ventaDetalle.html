@@ -58,54 +58,64 @@
                         <span th:text="${#temporals.format(venta.fechaHora, 'dd/MM/yyyy HH:mm')}"></span>
                     </div>
                     <div class="col-md-6 mb-2">
-                        <strong>Empleado:</strong>
-                        <span th:text="${venta.empleado.nombre}"></span>
+                        <p th:if="${venta.empleado != null}">
+                            <strong>Empleado:</strong> <span th:text="${venta.empleado.nombre}"></span>
+                        </p>
+                        <p th:if="${venta.empleado == null}">
+                            <strong>Empleado:</strong> No aplica (compra realizada por cliente)
+                        </p>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <strong>Cliente:</strong> 
+                        <span th:text="${venta.usuario.username}"></span>
                     </div>
                     <!-- <div class="col-md-6 mb-2">
                         <strong>Usuario:</strong>
                         <span th:text="${venta.usuario.username}"></span> -->
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <strong>Precio Total:</strong>
-                        <span class="fw-bold text-success" th:text="${#numbers.formatDecimal(venta.precioTotal, 1, 'COMMA', 2, 'POINT')}"></span>
-                    </div>
                 </div>
-            </div>
-
-            <!-- Detalle de productos -->
-            <div class="table-container">
-                <h5 class="mb-3 text-primary">
-                    <i class="bi bi-cart-check"></i> Productos Vendidos
-                </h5>
-
-                <div class="table-responsive">
-                    <table class="table align-middle">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Descripción</th>
-                                <th>Cantidad</th>
-                                <th>Precio Unitario</th>
-                                <th>Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="detalle : ${venta.listaVentaDetalle}">
-                                <td th:text="${detalle.producto.id}"></td>
-                                <td th:text="${detalle.producto.descripcion}"></td>
-                                <td th:text="${detalle.totalCantidad}"></td>
-                                <td th:text="${#numbers.formatDecimal(detalle.precioUnitActual, 1, 'COMMA', 2, 'POINT')}"></td>
-                                <td th:text="${#numbers.formatDecimal(detalle.precioTotalProducto, 1, 'COMMA', 2, 'POINT')}"></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="col-md-6 mb-2">
+                    <strong>Precio Total:</strong>
+                    <span class="fw-bold text-success" th:text="${#numbers.formatDecimal(venta.precioTotal, 1, 'COMMA', 2, 'POINT')}"></span>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
-        <div th:replace="fragments/footer :: footer"></div>
+        <!-- Detalle de productos -->
+        <div class="table-container">
+            <h5 class="mb-3 text-primary">
+                <i class="bi bi-cart-check"></i> Productos Vendidos
+            </h5>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Descripción</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Precio de costo actual</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="detalle : ${venta.listaVentaDetalle}">
+                            <td th:text="${detalle.producto.id}"></td>
+                            <td th:text="${detalle.producto.descripcion}"></td>
+                            <td th:text="${detalle.totalCantidad}"></td>
+                            <td th:text="${#numbers.formatDecimal(detalle.precioUnitActual, 1, 'COMMA', 2, 'POINT')}"></td>
+                            <td th:text="${#numbers.formatDecimal(detalle.precioCostoActual, 1, 'COMMA', 2, 'POINT')}"></td>
+                            <td th:text="${#numbers.formatDecimal(detalle.precioTotalProducto, 1, 'COMMA', 2, 'POINT')}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

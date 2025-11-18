@@ -26,6 +26,9 @@
                 color: #333;
                 transition: background-color 0.2s;
             }
+            .tab-buttons a:hover {
+                background-color: #e5e5e5;
+            }
             .tab-buttons a.active {
                 background-color: #e7e7f7;
             }
@@ -69,6 +72,7 @@
             <div class="tab-buttons">
                 <a th:href="@{/informes/stock}">Informes de Stock</a>
                 <a th:href="@{/informes/consultaVentas}" class="active">Consultas de Ventas</a>
+                <a th:href="@{/informes/ganancias}">Informe de Ganancias</a>
             </div>
 
             <!-- Filtro de fechas -->
@@ -127,9 +131,7 @@
                             <small class="text-muted" th:text="${#temporals.format(venta.fechaHora, 'dd/MM/yyyy HH:mm')}"></small>
                         </div>
                         <div>
-                            <strong>Total Venta:</strong>
-                            <span class="text-success">$</span><span class="text-success" 
-                                                                     th:text="${#numbers.formatDecimal(venta.precioTotal, 1, 'COMMA', 0, 'POINT')}"></span>
+                            <strong>Cliente:</strong> <span th:text="${venta.usuario.username}"></span> <br>
                         </div>
                     </div>
 

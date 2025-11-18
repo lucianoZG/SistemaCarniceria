@@ -3,9 +3,11 @@ package com.practicaprof.carniceria.services;
 import com.practicaprof.carniceria.entities.Inventario;
 import com.practicaprof.carniceria.entities.Producto;
 import com.practicaprof.carniceria.entities.ProductoInventario;
+import com.practicaprof.carniceria.repositories.InventarioRepository;
 import com.practicaprof.carniceria.repositories.ProductoInventarioRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,9 @@ import org.springframework.stereotype.Service;
 public class ProductoInventarioService {
     
     private final ProductoInventarioRepository productoInventarioRepo;
+    
+    @Autowired
+    private InventarioRepository inventarioRepository;
 
     public ProductoInventarioService(ProductoInventarioRepository productoInventarioRepo) {
         this.productoInventarioRepo = productoInventarioRepo;
@@ -51,5 +56,11 @@ public class ProductoInventarioService {
         Double stock = ((Number) fila[1]).doubleValue();
 
         return nombre + " (" + stock + " kg disponibles)";
+    }
+    
+    public int obtenerIdDelUltimoInventario() {
+        return inventarioRepository.findTopByOrderByFechaDesc()
+                .map(inv -> inv.getId())
+                .orElseThrow(() -> new RuntimeException("No hay inventarios registrados"));
     }
 }

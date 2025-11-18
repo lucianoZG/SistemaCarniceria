@@ -4,46 +4,105 @@
         <title>Registro de usuario</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <style>
+            body {
+                background: linear-gradient(to right, #c1121f, #ef233c);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            .register-card {
+                background-color: white;
+                padding: 2rem;
+                border-radius: 1rem;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+                width: 100%;
+                max-width: 500px;
+                text-align: center;
+            }
+
+            .register-card h1 {
+                margin-bottom: 1.5rem;
+                font-weight: 700;
+                color: #d90429;
+            }
+
+            .form-control {
+                border-radius: 0.5rem;
+            }
+
+            .btn-primary {
+                background-color: #d90429;
+                border-color: #d90429;
+                border-radius: 0.5rem;
+                font-weight: 500;
+                transition: background 0.3s ease;
+            }
+
+            .btn-primary:hover {
+                background-color: #780000;
+                border-color: #780000;
+            }
+
+            .btn-secondary {
+                background-color: #e63946;
+                border-color: #e63946;
+                border-radius: 0.5rem;
+                font-weight: 500;
+                transition: background 0.3s ease;
+            }
+
+            .btn-secondary:hover {
+                background-color: #780000;
+                border-color: #780000;
+            }
+
+            .form-label {
+                font-weight: 500;
+            }
+        </style>
     </head>
     <body>
-        
-        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center">
-            <h1 class="text-center">Registro de Usuario</h1>
-            <div class="card-body">
-                <form th:action="@{/registrarUsuario}" th:object="${usuario}" method="POST">
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Tu nombre de usuario" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Tu contraseña" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Tu email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono">Telefono</label>
-                        <input type="tel" th:field="*{telefono}" class="form-control" id="telefono" placeholder="Tu teléfono" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="role">Rol</label>
-                        <select th:field="*{rol}" class="form-control">
-                                <option value="USER">Usuario</option>
-                                <option value="ADMIN">Admin</option>
-                            </select>
-                    </div>
+        <div class="register-card">
+            <h1>Registro de Usuario</h1>
+            <form th:action="@{/registrarUsuario}" th:object="${usuario}" method="POST">
+                <div class="mb-3 text-start">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Tu nombre de usuario" required>
+                </div>
 
-                    <br>
+                <div class="mb-3 text-start">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Tu contraseña" required>
+                </div>
 
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-secondary btn-lg btn-block">Registrar</button>
-                    </div>
-                </form>
-            </div>
+                <div class="mb-3 text-start">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Tu email" required>
+                </div>
+
+                <div class="mb-3 text-start">
+                    <label for="telefono" class="form-label">Teléfono</label>
+                    <input type="tel" th:field="*{telefono}" class="form-control" id="telefono" placeholder="Tu teléfono" required>
+                </div>
+
+                <div class="mb-3 text-start">
+                    <label for="role" class="form-label">Rol</label>
+                    <select th:field="*{rol}" class="form-select">
+                        <option value="CLIENTE">Cliente</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">Registrar</button>
+            </form>
         </div>
-        
     </body>
 </html>

@@ -16,16 +16,19 @@
                 padding: 5px;
                 margin-bottom: 20px;
             }
-            .tab-buttons button {
+            .tab-buttons a {
                 flex: 1;
                 border: none;
                 background: none;
                 padding: 10px;
                 border-radius: 20px;
                 font-weight: 500;
+                text-align: center;
+                text-decoration: none;
+                color: #000;
                 transition: background-color 0.2s;
             }
-            .tab-buttons button:hover {
+            .tab-buttons a:hover {
                 background-color: #e5e5e5;
             }
             .tab-buttons .active {
@@ -59,8 +62,13 @@
 
             <!-- Botones de pestañas -->
             <div class="tab-buttons">
-                <a th:href="@{/ventas}" class="btn btn-light active">Lista de Ventas</a>
-                <a th:href="@{/ventas/registrar}" class="btn btn-light">Registrar Venta</a>
+                <a th:href="@{/ventas}" class="active">Lista de Ventas</a>
+                <a th:href="@{/ventas/registrar}" class="">Registrar Venta</a>
+            </div>
+            
+            <!-- Mensaje si no hay productos -->
+            <div th:if="${#lists.isEmpty(ventas)}" class="alert alert-info text-center">
+                No hay ventas registradas aún.
             </div>
 
             <!-- Tabla -->
@@ -69,7 +77,7 @@
                     <i class="bi bi-receipt"></i> Ventas Registradas
                 </h5>
 
-                <!-- Buscador -->
+                <!-- Buscador AGREGAR LA FUNCIONALIDAD DE ESTO!!!-->
                 <div class="input-group mb-3" style="max-width: 400px;">
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                     <input type="text" class="form-control" placeholder="Buscar por número de factura...">

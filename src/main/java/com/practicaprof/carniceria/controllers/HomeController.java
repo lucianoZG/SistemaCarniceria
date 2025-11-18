@@ -25,11 +25,17 @@ public class HomeController {
         String productoMasVendido = ventaDetalleServicio.obtenerProductoMasVendido();
         String productoMenorStock = productoInventarioServicio.obtenerProductoConMenorStock();
         double gananciasDelDia = ventaServicio.obtenerGananciasDelDia();
-        
+        String empleadoMasVentas = ventaServicio.obtenerEmpleadoConMasVentasUltimoMes();
+
         model.addAttribute("productoMasVendido", productoMasVendido);
         model.addAttribute("productoConMenorStock", productoMenorStock);
         model.addAttribute("gananciasDelDia", gananciasDelDia);
+        model.addAttribute("empleadoMasVentas", empleadoMasVentas);
         return "index";
     }
     
+    @GetMapping("cliente/indexCliente")
+    public String inicioCliente() {
+        return "cliente/indexCliente";
+    }
 }
