@@ -177,21 +177,6 @@ public class InformeController {
         document.close();
     }
 
-    private void agregarPiePagina(Document document) {
-        document.add(new Paragraph("\n\n"));
-        LineSeparator ls = new LineSeparator(new SolidLine());
-        ls.setOpacity(0.3f);
-        document.add(ls);
-
-        Paragraph footer = new Paragraph("Carnicería JP - Libertad 1950")
-                .setFontSize(10)
-                .setFontColor(ColorConstants.GRAY)
-                .setTextAlignment(TextAlignment.CENTER)
-                .setMarginTop(5);
-
-        document.add(footer);
-    }
-
     @GetMapping("/consultaVentas")
     public String consultarVentas(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
@@ -690,5 +675,21 @@ public class InformeController {
         document.close();
     }
 
+    
+
+    private void agregarPiePagina(Document document) {
+        document.add(new Paragraph("\n\n"));
+        LineSeparator ls = new LineSeparator(new SolidLine());
+        ls.setOpacity(0.3f);
+        document.add(ls);
+
+        Paragraph footer = new Paragraph("Carnicería JP - Libertad 1950")
+                .setFontSize(10)
+                .setFontColor(ColorConstants.GRAY)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setMarginTop(5);
+
+        document.add(footer);
+    }
 
 }
