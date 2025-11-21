@@ -35,6 +35,10 @@
                 padding: 20px;
                 box-shadow: 0 0 8px rgba(0,0,0,0.05);
             }
+            body {
+                background: linear-gradient(180deg, #ffffff 0%, #fff1f1 40%, #ffe5e5 100%);
+            }
+
         </style>
     </head>
     <body class="d-flex flex-column min-vh-100">
@@ -78,15 +82,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="pi : ${productos}">
-                                <td th:text="${pi.producto.id}"></td>
-                                <td th:text="${pi.producto.descripcion}"></td>
-                                <td th:text="${#numbers.formatDecimal(pi.producto.precioUnitario, 1, 'COMMA', 0, 'POINT')}"></td>
-                                <td th:text="${pi.producto.stock}"></td>
-                                <td th:text="${#numbers.formatDecimal(pi.producto.precioUnitario * pi.producto.stock, 1, 'COMMA', 0, 'POINT')}"></td>
+                            <tr th:each="producto : ${productos}">
+                                <td th:text="${producto.id}"></td>
+                                <td th:text="${producto.descripcion}"></td>
+                                <td th:text="${#numbers.formatDecimal(producto.precioUnitario, 1, 'COMMA', 0, 'POINT')}"></td>
+                                <td th:text="${producto.stock}"></td>
+                                <td th:text="${#numbers.formatDecimal(producto.precioUnitario * producto.stock, 1, 'COMMA', 0, 'POINT')}"></td>
                             </tr>
                         </tbody>
                     </table>
+
+                    <div class="d-flex justify-content-end mb-4"
+                         th:if="${productos != null and !#lists.isEmpty(productos)}">
+                        <a th:href="@{/stock/pdf}" class="btn btn-danger"
+                           class="btn btn-danger">
+                            <i class="bi bi-file-earmark-pdf-fill"></i> Descargar PDF
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Valor total del inventario -->

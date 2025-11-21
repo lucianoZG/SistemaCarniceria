@@ -6,7 +6,12 @@ package com.practicaprof.carniceria.controllers;
 
 import com.practicaprof.carniceria.entities.Producto;
 import com.practicaprof.carniceria.services.ProductoService;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/productos")
@@ -57,7 +63,7 @@ public class ProductoController {
         model.addAttribute("productos", listaProductos);
         model.addAttribute("estado", estado);
         model.addAttribute("busqueda", busqueda);
-        
+
         return "/productos/productos";
     }
 
@@ -69,8 +75,26 @@ public class ProductoController {
     }
 
     @PostMapping
-    public String registrar(@ModelAttribute("producto") Producto producto) {
+    public String registrar(@ModelAttribute("producto") Producto producto,
+            @RequestParam("imagenFile") MultipartFile imagenFile) throws IOException {
 //        servicio.registrarProducto(producto.getDescripcion(), producto.getPrecioUnitario(), producto.getCantidad());
+        // Si subió una imagen
+        if (!imagenFile.isEmpty()) {
+
+            String uploadDir = "uploads/productos/";
+            String fileName = UUID.randomUUID().toString() + "_" + imagenFile.getOriginalFilename();
+
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Path filePath = uploadPath.resolve(fileName);
+            Files.write(filePath, imagenFile.getBytes());
+
+            producto.setImagen("/uploads/productos/" + fileName);
+        }
+
         servicio.registrarProducto(producto);
         return "redirect:/productos";
     }
@@ -84,7 +108,33 @@ public class ProductoController {
     }
 
     @PostMapping("/editar/{id}")
-    public String modificar(@PathVariable int id, @ModelAttribute("producto") Producto producto) {
+    public String modificar(@PathVariable int id,
+            @ModelAttribute("producto") Producto producto,
+            @RequestParam("imagenFile") MultipartFile imagenFile) throws IOException {
+//        Producto productoExistente = servicio.obtenerPorId(id);
+
+        // Si subió una nueva imagen
+        if (!imagenFile.isEmpty()) {
+
+            String uploadDir = "uploads/productos/";
+            String fileName = UUID.randomUUID().toString() + "_" + imagenFile.getOriginalFilename();
+
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Path filePath = uploadPath.resolve(fileName);
+            Files.write(filePath, imagenFile.getBytes());
+
+            producto.setImagen("/uploads/productos/" + fileName);
+        } else {
+            // Mantener imagen anterior
+            producto.setImagen(producto.getImagen());
+        }
+
+//        producto.setId(id);
+
         servicio.editar(producto);
         return "redirect:/productos";
     }

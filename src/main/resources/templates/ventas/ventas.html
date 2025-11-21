@@ -49,6 +49,11 @@
                 background-color: #fff3cd;
                 color: #856404;
             }
+
+            body {
+                background: linear-gradient(180deg, #ffffff 0%, #fff1f1 40%, #ffe5e5 100%);
+            }
+
         </style>
     </head>
     <body class="d-flex flex-column min-vh-100">
@@ -65,7 +70,7 @@
                 <a th:href="@{/ventas}" class="active">Lista de Ventas</a>
                 <a th:href="@{/ventas/registrar}" class="">Registrar Venta</a>
             </div>
-            
+
             <!-- Mensaje si no hay productos -->
             <div th:if="${#lists.isEmpty(ventas)}" class="alert alert-info text-center">
                 No hay ventas registradas aún.
@@ -77,11 +82,17 @@
                     <i class="bi bi-receipt"></i> Ventas Registradas
                 </h5>
 
-                <!-- Buscador AGREGAR LA FUNCIONALIDAD DE ESTO!!!-->
-                <div class="input-group mb-3" style="max-width: 400px;">
-                    <span class="input-group-text"><i class="bi bi-search"></i></span>
-                    <input type="text" class="form-control" placeholder="Buscar por número de factura...">
-                </div>
+                <!-- Buscador -->
+                <form method="get" th:action="@{/ventas}">
+                    <div class="input-group mb-3" style="max-width: 400px;">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" 
+                               name="busqueda"
+                               th:value="${busqueda}"
+                               placeholder="Buscar por factura, cliente o fecha...">
+                    </div>
+                </form>
+
 
                 <!-- Tabla de ventas -->
                 <div class="table-responsive">
@@ -92,7 +103,7 @@
                                 <th>N° Factura</th>
                                 <th>Fecha y Hora</th>
                                 <th>Empleado</th>
-                                <th>Usuario</th>
+                                <th>Cliente</th>
                                 <th>Precio Total</th>
                                 <th>Acciones</th>
                             </tr>
@@ -111,6 +122,10 @@
                                     <a th:href="@{'/ventas/detalle/' + ${venta.id}}" 
                                        class="btn btn-outline-primary btn-sm me-2">
                                         <i class="bi bi-eye"></i> Ver Detalle
+                                    </a>
+                                    <a th:href="@{'/ventas/pdf/' + ${venta.id}}"
+                                        class="btn btn-danger btn-sm me-2">
+                                      <i class="bi bi-file-earmark-pdf-fill">Descargar PDF</i>  
                                     </a>
                                 </td>
                             </tr>

@@ -4,6 +4,7 @@ import com.practicaprof.carniceria.entities.Producto;
 import com.practicaprof.carniceria.entities.ProductoInventario;
 import com.practicaprof.carniceria.repositories.ProductoInventarioRepository;
 import com.practicaprof.carniceria.repositories.ProductoRepository;
+import com.practicaprof.carniceria.repositories.VentaDetalleRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,15 @@ public class ProductoService {
     private final ProductoRepository repositorio;
     private final ProductoInventarioRepository proInvRepo;
     private final ProductoInventarioService proInvServicio;
+    private final VentaDetalleRepository venDetRepo;
 
-    public ProductoService(ProductoRepository repositorio, ProductoInventarioRepository proInvRepo, ProductoInventarioService productoInventarioService) {
+    public ProductoService(ProductoRepository repositorio, ProductoInventarioRepository proInvRepo,
+            ProductoInventarioService productoInventarioService,
+            VentaDetalleRepository venDetRepo) {
         this.repositorio = repositorio;
         this.proInvRepo = proInvRepo;
         this.proInvServicio = productoInventarioService;
+        this.venDetRepo = venDetRepo;
     }
 
 //    public Producto registrarProducto(String descripcion, double precio, double cantidad) {
@@ -120,25 +125,37 @@ public class ProductoService {
                 .toList();
     }
 
-    public List<Producto> listarDisponiblesParaVenta() {
-        int ultimoInventarioId = proInvServicio.obtenerIdDelUltimoInventario();
-        List<Producto> productos = repositorio.findProductosConStockDisponible(ultimoInventarioId);
+//    public List<Producto> listarDisponiblesParaVenta() {
+//        int ultimoInventarioId = proInvServicio.obtenerIdDelUltimoInventario();
+//        List<Producto> productos = repositorio.findProductosConStockDisponible(ultimoInventarioId);
+//
+//        //Implementar que al estar inactivo el producto, su stock sea 0.
+////        for (Producto p : productos) {
+////            ProductoInventario pi = proInvRepo.findByProductoAndInventario(p, ultimoInventarioId);
+////            if (!p.isEstado()) {
+////                pi.setStockActual(0);
+////            }
+////        }
+//        return productos;
+//    }
 
-        //Implementar que al estar inactivo el producto, su stock sea 0.
-//        for (Producto p : productos) {
-//            ProductoInventario pi = proInvRepo.findByProductoAndInventario(p, ultimoInventarioId);
-//            if (!p.isEstado()) {
-//                pi.setStockActual(0);
-//            }
-//        }
-
-        return productos;
+    public List<Producto> listarProductosDisponibles() {
+        return repositorio.findProductosConStockDisponible();
     }
-    
+
     public List<Producto> listarProductosUltimoInventario() {
         int ultimoInventarioId = proInvServicio.obtenerIdDelUltimoInventario();
         List<Producto> productos = repositorio.findProductosUltimoInventario(ultimoInventarioId);
-        
+
         return productos;
+    }
+
+    // in ProductoService (o crear un método que llame a VentaDetalleRepository)
+    public List<Producto> listarProductosQueSeVendieron() {
+        return venDetRepo.findDistinctProductosVendidos();
+    }
+
+    public List<Producto> buscarPorDescripcion(String texto) {
+        return repositorio.findByDescripcion(texto);
     }
 }

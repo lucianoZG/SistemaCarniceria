@@ -49,6 +49,10 @@
                 background-color: #f8d7da;
                 color: #a94442;
             }
+            body {
+                background: linear-gradient(180deg, #ffffff 0%, #fff1f1 40%, #ffe5e5 100%);
+            }
+
         </style>
     </head>
     <body class="d-flex flex-column min-vh-100">
@@ -81,13 +85,13 @@
                 <!-- Filtro de estado -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <form th:action="@{/productos}" method="get" class="d-flex align-items-center">
-                        
-                            <div class="input-group me-3" style="width: 380px;">
-                                <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                <input type="text" name="busqueda" class="form-control" placeholder="Buscar por código o descripción..."
-                                       th:value="${busqueda}">
-                            </div>
-                        
+
+                        <div class="input-group me-3" style="width: 380px;">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" name="busqueda" class="form-control" placeholder="Buscar por código o descripción..."
+                                   th:value="${busqueda}">
+                        </div>
+
                         <div class="d-flex align-items-center">
                             <label for="estado" class="me-2 fw-bold">Mostrar:</label>
                             <select id="estado" name="estado" class="form-select form-select-sm" style="width: 150px;" onchange="this.form.submit()">
@@ -120,7 +124,7 @@
                                 <td th:text="${producto.precioUnitario}"></td>
                                 <td th:text="${producto.precioCosto}"></td>
                                 <td th:text="${producto.stock}"></td>
-                                
+
                                 <td>
                                     <span th:classappend="${producto.estado} ? 'badge badge-activo' : 'badge badge-inactivo'"
                                           th:text="${producto.estado} ? 'Activo' : 'Inactivo'">

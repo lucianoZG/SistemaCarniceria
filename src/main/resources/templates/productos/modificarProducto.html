@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <title>Modificar Empleado</title>
+        <title>Modificar Producto</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <style>
             .tab-buttons {
@@ -40,6 +40,10 @@
                 padding: 25px;
                 box-shadow: 0 0 8px rgba(0,0,0,0.05);
             }
+            body {
+                background: linear-gradient(180deg, #ffffff 0%, #fff1f1 40%, #ffe5e5 100%);
+            }
+
         </style>
     </head>
     <body class="d-flex flex-column min-vh-100">
@@ -57,10 +61,10 @@
             </div>
 
             <div class="form-container">
-                
+
                 <h5 class="mb-3"><i class="bi bi-plus-circle"></i> Editar Producto</h5>
-                
-                <form th:action="@{/productos/editar/{id}(id=${producto.id})}" th:object="${producto}" method="post" class="card p-4 shadow-sm">
+
+                <form th:action="@{/productos/editar/{id}(id=${producto.id})}" th:object="${producto}" method="post" enctype="multipart/form-data" class="card p-4 shadow-sm">
 
                     <!-- Campo oculto para enviar el ID del empleado -->
                     <input type="hidden" th:field="*{id}" />
@@ -84,7 +88,12 @@
                         <label>Precio de costo</label>
                         <input type="number" step="0.01" class="form-control" th:field="*{precioCosto}" required>
                     </div>
-                    
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Imagen del Producto</label>
+                        <input type="file" class="form-control" name="imagenFile" accept="image/*">
+                    </div>
+
                     <div class="text-end mt-4">
                         <button type="submit" class="btn btn-primary w-100">Modificar</button>
                     </div>

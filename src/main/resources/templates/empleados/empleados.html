@@ -49,6 +49,10 @@
                 background-color: #f8d7da;
                 color: #a94442;
             }
+            body {
+                background: linear-gradient(180deg, #ffffff 0%, #fff1f1 40%, #ffe5e5 100%);
+            }
+
         </style>
     </head>
     <body class="d-flex flex-column min-vh-100">
@@ -114,7 +118,7 @@
                                     <a th:if="${empleado.estado}"
                                        th:href="@{'/empleados/editar/' + ${empleado.id}}" 
                                        class="btn btn-outline-primary btn-sm me-2">
-                                       <i class="bi bi-pencil-square"></i> Editar
+                                        <i class="bi bi-pencil-square"></i> Editar
                                     </a>
                                     <a th:if="${empleado.estado}"
                                        th:href="@{'/empleados/baja/' + ${empleado.id}}" 

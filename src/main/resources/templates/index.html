@@ -8,14 +8,10 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1998/1998571.png" type="image/png">
         <style>
-            body {
-                background-color: #f8f9fa;
-            }
             .hero-section {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-
 
                 position: relative;
                 background-image: url('https://images.unsplash.com/photo-1611038333075-2efd28705f42?q=80&w=1249&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
@@ -43,7 +39,7 @@
                 height: 100%;
 
                 /* Sombreado elegante */
-                background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9));
+                background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.7));
 
                 /* Puedes ajustar la opacidad */
                 z-index: 1;
@@ -148,6 +144,38 @@
                 color: #222;
                 margin-bottom: 20px;
             }
+
+            .hero-script {
+                font-family: 'Brush Script MT', cursive;
+                font-size: 42px;
+                margin-bottom: 25px;
+                font-weight: 300;
+                opacity: 0;
+                animation: fadeUp 1s ease forwards;
+                animation-delay: .4s;
+            }
+
+            .hero-subtitle {
+                font-size: 28px;
+                letter-spacing: 2px;
+                font-weight: 300;
+                opacity: 0;
+                animation: fadeUp 1s ease forwards;
+            }
+
+            .hero-title {
+                font-size: 60px;
+                font-weight: 800;
+                margin: 10px 0;
+                opacity: 0;
+                animation: fadeUp 1s ease forwards;
+                animation-delay: .2s;
+            }
+            
+            body {
+                background: linear-gradient(180deg, #ffffff 0%, #fff1f1 40%, #ffe5e5 100%);
+            }
+
         </style>
     </head>
     <body class="d-flex flex-column min-vh-100">
@@ -158,9 +186,9 @@
         <!-- HERO -->
         <section class="hero-section">
             <div class="hero-content">
-                <h1 class="fw-bold display-4 mb-3">¡Bienvenido!</h1>
-                <h5 class="fw-light">Sistema de Gestión Integral para Carnicería</h5>
-                <p class="mt-3">Administra ventas, productos, empleados e informes desde un solo lugar</p>
+                <h1 class="hero-title">¡Bienvenido!</h1>
+                <h5 class="hero-script">Sistema de Gestión Integral para Carnicería</h5>
+                <p class="hero-subtitle">Administra ventas, productos, empleados e informes desde un solo lugar</p>
             </div>
         </section>
 

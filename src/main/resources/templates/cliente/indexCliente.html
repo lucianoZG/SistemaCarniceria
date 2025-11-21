@@ -11,7 +11,7 @@
             body {
                 background-color: #f8f9fa;
             }
-            .hero-section {
+/*            .hero-section {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -22,17 +22,17 @@
                 background-position: center;
                 background-repeat: no-repeat;
 
-                /* Altura y alineación */
+                 Altura y alineación 
                 padding: 100px 20px;
                 color: white;
                 text-align: center;
                 min-height: 60vh;
 
-                /* Para que el overlay quede encima */
+                 Para que el overlay quede encima 
                 overflow: hidden;
             }
 
-            /* Capa de sombreado encima de la imagen */
+             Capa de sombreado encima de la imagen 
             .hero-section::before {
                 content: "";
                 position: absolute;
@@ -41,20 +41,20 @@
                 width: 100%;
                 height: 100%;
 
-                /* Sombreado elegante */
+                 Sombreado elegante 
                 background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9));
 
-                /* Puedes ajustar la opacidad */
+                 Puedes ajustar la opacidad 
                 z-index: 1;
             }
 
-            /* Que el contenido quede arriba del sombreado */
+             Que el contenido quede arriba del sombreado 
             .hero-section > * {
                 position: relative;
                 z-index: 2;
             }
 
-            /* Animación suave para el héroe */
+             Animación suave para el héroe 
             .hero-content {
                 opacity: 0;
                 transform: translateY(20px);
@@ -71,7 +71,7 @@
                     opacity: 1;
                     transform: translateY(0);
                 }
-            }
+            }*/
 
             .feature-card {
                 transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -80,6 +80,98 @@
                 transform: translateY(-5px);
                 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             }
+
+            /* HERO ESTILO PREMIUM */
+            .hero-section-custom {
+                position: relative;
+                background-image: url('https://images.unsplash.com/photo-1666013942642-b7b54ecafd7d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+                background-size: cover;
+                background-position: center;
+                min-height: 80vh;
+                display: flex;
+                align-items: center;
+                padding-left: 60px;
+                color: white;
+                overflow: hidden;
+            }
+
+            /* Overlay tipo textura oscura */
+            .hero-overlay {
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
+                z-index: 1;
+            }
+
+            /* Contenedor del texto */
+            .hero-text-container {
+                position: relative;
+                z-index: 2;
+                max-width: 600px;
+            }
+
+            /* Estilo de “LA AUTÉNTICA” */
+            .hero-subtitle {
+                font-size: 28px;
+                letter-spacing: 2px;
+                font-weight: 300;
+                opacity: 0;
+                animation: fadeUp 1s ease forwards;
+            }
+
+            /* Estilo de “CARNE ARGENTINA” */
+            .hero-title {
+                font-size: 60px;
+                font-weight: 800;
+                margin: 10px 0;
+                opacity: 0;
+                animation: fadeUp 1s ease forwards;
+                animation-delay: .2s;
+            }
+
+            /* Estilo manuscrito similar */
+            .hero-script {
+                font-family: 'Brush Script MT', cursive;
+                font-size: 42px;
+                margin-bottom: 25px;
+                font-weight: 300;
+                opacity: 0;
+                animation: fadeUp 1s ease forwards;
+                animation-delay: .4s;
+            }
+
+            /* Botón estilo minimalista */
+            .hero-btn {
+                display: inline-block;
+                padding: 10px 28px;
+                border: 1px solid white;
+                color: white;
+                text-decoration: none;
+                border-radius: 4px;
+                font-weight: 500;
+                transition: 0.3s;
+                opacity: 0;
+                animation: fadeUp 1s ease forwards;
+                animation-delay: .6s;
+            }
+
+            .hero-btn:hover {
+                background: white;
+                color: black;
+            }
+
+            /* Animación suave */
+            @keyframes fadeUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(25px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
         </style>
     </head>
     <body class="d-flex flex-column min-vh-100">
@@ -88,13 +180,26 @@
         <div th:replace="fragments/navbarCliente :: navbar('')"></div>
 
         <!-- HERO -->
-        <section class="hero-section">
-            <div class="hero-content">
-                <h1 class="fw-bold display-4 mb-3">¡Bienvenido!</h1>
-                <h5 class="fw-light">Sistema de Gestión Integral para Carnicería</h5>
-                <p class="mt-3">Realice su pedido online, con una gran variedad de productos</p>
+        <!--        <section class="hero-section">
+                    <div class="hero-content">
+                        <h1 class="fw-bold display-4 mb-3">¡Bienvenido, <span class="fw-semibold" th:text="${#authentication.name}">Usuario</span>!</h1>
+                        <p class="mt-3">Realice su pedido online, con una gran variedad de productos</p>
+                    </div>
+                </section>-->
+
+        <!-- HERO NUEVO -->
+        <section class="hero-section-custom">
+            <div class="hero-overlay"></div>
+
+            <div class="hero-text-container">
+                <h3 class="hero-subtitle">CARNICERIA JP</h3>
+                <h1 class="hero-title">CARNE ARGENTINA</h1>
+                <h2 class="hero-script">Desde 1999</h2>
+
+                <a th:href="@{/cliente/compras}" class="hero-btn">VER PRODUCTOS</a>
             </div>
         </section>
+
 
         <!-- FEATURES -->
         <div class="container py-5">
@@ -105,7 +210,7 @@
                         <div class="card feature-card text-center border-0 shadow-sm">
                             <div class="card-body">
                                 <div class="fs-1 text-dark mb-3">💵</div>
-                                <h5 class="fw-bold">Compras</h5>
+                                <h5 class="fw-bold">Comprar</h5>
                                 <p class="text-muted small">Revisa los productos disponibles y compralos de manera online</p>
                             </div>
                         </div>

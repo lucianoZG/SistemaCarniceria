@@ -27,4 +27,13 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
         """, nativeQuery = true)
     List<Object[]> obtenerEmpleadoConMasVentasUltimoMes(@Param("fechaInicio") LocalDateTime fechaInicio);
 
+     @Query("""
+        SELECT v FROM Venta v
+        WHERE LOWER(v.nroFactura) LIKE LOWER(CONCAT('%', :texto, '%'))
+           OR LOWER(v.usuario.username) LIKE LOWER(CONCAT('%', :texto, '%'))
+           OR (:fecha IS NOT NULL AND FUNCTION('DATE', v.fechaHora) = :fecha)
+        """)
+    List<Venta> buscarPorFacturaClienteOFecha(@Param("texto") String texto,
+                                              @Param("fecha") java.time.LocalDate fecha);
+
 }

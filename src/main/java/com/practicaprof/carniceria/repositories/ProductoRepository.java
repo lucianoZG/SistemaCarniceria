@@ -21,6 +21,12 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
             + "LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :texto, '%')) "
             + "OR CAST(p.id AS string) LIKE CONCAT('%', :texto, '%')")
     List<Producto> findByDescripcionContainingIgnoreCaseOrIdAsString(@Param("texto") String texto, @Param("texto") String texto2);
+    
+    // Buscar por descripcion y que el stock sea mayor a 0
+    @Query("SELECT p FROM Producto p WHERE "
+            + "LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :texto, '%')) "
+            + "AND p.stock > 0")
+    List<Producto> findByDescripcion(@Param("texto") String texto);
 
     // Igual pero filtrando por estado, se puede simplificar pasando solo un texto.
     @Query("SELECT p FROM Producto p WHERE "
@@ -40,6 +46,14 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
         AND pi.stockActual > 0
     """)
     List<Producto> findProductosConStockDisponible(@Param("inventarioId") int inventarioId);
+    
+    @Query("""
+        SELECT p 
+        FROM Producto p
+        WHERE p.estado = true
+        AND p.stock > 0
+    """)
+    List<Producto> findProductosConStockDisponible();
     
     @Query("""
         SELECT p 

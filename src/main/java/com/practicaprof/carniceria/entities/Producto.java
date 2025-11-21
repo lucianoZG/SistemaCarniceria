@@ -46,4 +46,7 @@ public class Producto {
     //Relacion con ventaDetalle
     @OneToMany(mappedBy = "producto")
     private List<VentaDetalle> listaVentaDetalle;
+    
+    @Column(name = "proImagen")
+    private String imagen; // Ruta de la imagen
 }

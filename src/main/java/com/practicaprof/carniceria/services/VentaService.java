@@ -6,6 +6,7 @@ import com.practicaprof.carniceria.entities.Usuario;
 import com.practicaprof.carniceria.entities.Venta;
 import com.practicaprof.carniceria.entities.VentaDetalle;
 import com.practicaprof.carniceria.repositories.VentaRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -34,12 +35,12 @@ public class VentaService {
             int idProducto = detalle.getProducto().getId();
 
             // Buscar stock actual
-            Optional<ProductoInventario> optionalInventario = productoInventarioServicio.findByProductoIdDelUltimoInventario(idProducto);
+//            Optional<ProductoInventario> optionalInventario = productoInventarioServicio.findByProductoIdDelUltimoInventario(idProducto);
             Producto producto = productoServicio.obtenerPorId(idProducto);
 
-            if (optionalInventario.isEmpty()) {
-                return "El producto con ID " + idProducto + " no pertenece al último inventario o no está activo.";
-            }
+//            if (optionalInventario.isEmpty()) {
+//                return "El producto con ID " + idProducto + " no pertenece al último inventario o no está activo.";
+//            }
 
 //            ProductoInventario productoInv = optionalInventario.get();
             // Validar stock
@@ -55,8 +56,7 @@ public class VentaService {
             detalle.setPrecioUnitActual(producto.getPrecioUnitario());
             detalle.setPrecioCostoActual(producto.getPrecioCosto());
 //            System.out.println("Producto: " + producto.getDescripcion() + " | Costo: " + detalle.getPrecioCostoActual());
-            
-            
+
             producto.setStock(producto.getStock() - detalle.getTotalCantidad());
             productoServicio.registrarProducto(producto);
         }
@@ -120,6 +120,10 @@ public class VentaService {
         long cantidadVentas = cantidadVentasNum.longValue();
 
         return nombreEmpleado + " (" + cantidadVentas + " ventas)";
+    }
+
+    public List<Venta> buscarPorFacturaClienteOFecha(String texto, LocalDate fecha) {
+        return repositorio.buscarPorFacturaClienteOFecha(texto, fecha);
     }
 
 }

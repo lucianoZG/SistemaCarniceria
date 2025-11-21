@@ -56,6 +56,10 @@
                 font-weight: bold;
                 color: #0d6efd;
             }
+            body {
+                background: linear-gradient(180deg, #ffffff 0%, #fff1f1 40%, #ffe5e5 100%);
+            }
+
         </style>
     </head>
 
@@ -159,6 +163,14 @@
                         Total Venta: $<span th:text="${#numbers.formatDecimal(venta.precioTotal, 1, 'COMMA', 0, 'POINT')}"></span>
                     </div>
                 </div>
+
+                <div class="d-flex justify-content-end mb-4"
+                     th:if="${ventas != null and !#lists.isEmpty(ventas)}">
+                    <a th:href="@{/informes/ventas/pdf(fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
+                       class="btn btn-danger">
+                        <i class="bi bi-file-earmark-pdf-fill"></i> Descargar PDF
+                    </a>
+                </div>
             </div>
 
             <!-- Total general -->
@@ -171,8 +183,6 @@
             </div>
 
         </div>
-
-
 
         <!-- Footer -->
         <div th:replace="fragments/footer :: footer"></div>

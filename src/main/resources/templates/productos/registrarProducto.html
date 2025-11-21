@@ -41,6 +41,10 @@
                 padding: 25px;
                 box-shadow: 0 0 8px rgba(0,0,0,0.05);
             }
+            body {
+                background: linear-gradient(180deg, #ffffff 0%, #fff1f1 40%, #ffe5e5 100%);
+            }
+
         </style>
     </head>
 
@@ -65,7 +69,7 @@
 
                 <h5 class="mb-3"><i class="bi bi-plus-circle"></i> Nuevo Producto</h5>
 
-                <form th:action="@{/productos}" th:object="${producto}" method="post">
+                <form th:action="@{/productos}" th:object="${producto}" method="post" enctype="multipart/form-data">
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Descripción</label>
@@ -86,6 +90,12 @@
                         <label class="form-label fw-bold">Precio de costo</label>
                         <input type="number" step="0.01" class="form-control" th:field="*{precioCosto}" required>
                     </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Imagen del Producto</label>
+                        <input type="file" class="form-control" name="imagenFile" accept="image/*">
+                    </div>
+
 
                     <div class="text-end mt-4">
                         <button type="submit" class="btn btn-primary w-100">Registrar Producto</button>
