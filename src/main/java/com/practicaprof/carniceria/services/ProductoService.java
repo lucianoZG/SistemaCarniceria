@@ -7,6 +7,8 @@ import com.practicaprof.carniceria.repositories.ProductoRepository;
 import com.practicaprof.carniceria.repositories.VentaDetalleRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -130,7 +132,7 @@ public class ProductoService {
 //        List<Producto> productos = repositorio.findProductosConStockDisponible(ultimoInventarioId);
 //
 //        //Implementar que al estar inactivo el producto, su stock sea 0.
-////        for (Producto p : productos) {
+    ////        for (Producto p : productos) {
 ////            ProductoInventario pi = proInvRepo.findByProductoAndInventario(p, ultimoInventarioId);
 ////            if (!p.isEstado()) {
 ////                pi.setStockActual(0);
@@ -158,4 +160,13 @@ public class ProductoService {
     public List<Producto> buscarPorDescripcion(String texto) {
         return repositorio.findByDescripcion(texto);
     }
+
+    public Page<Producto> buscarPorDescripcionPaginado(String descripcion, Pageable pageable) {
+        return repositorio.findByDescripcionContainingIgnoreCaseAndStockGreaterThan(descripcion, 0, pageable);
+    }
+
+    public Page<Producto> listarProductosDisponiblesPaginado(Pageable pageable) {
+        return repositorio.findByStockGreaterThan(0, pageable);
+    }
+
 }

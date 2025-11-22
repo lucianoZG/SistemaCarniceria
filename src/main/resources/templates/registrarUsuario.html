@@ -10,16 +10,29 @@
 
         <style>
             body {
-                background: linear-gradient(to right, #c1121f, #ef233c);
                 min-height: 100vh;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                position: relative;
+                background: linear-gradient(to right, #c1121f, #ef233c); /* fallback */
+            }
+            
+            /* Imagen de fondo con overlay */
+            body::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: url('https://img.freepik.com/vector-gratis/piezas-carne-fresca-corte-patrones-fisuras_1284-36399.jpg?semt=ais_hybrid&w=740&q=80') no-repeat center center;
+                background-size: cover;
+                opacity: 0.4; /* transparencia para efecto sombreado */
+                z-index: 0;
             }
 
             .register-card {
-                background-color: white;
+                z-index: 1; /* siempre sobre el overlay */
+                background-color: rgba(255, 255, 255, 0.95);
                 padding: 2rem;
                 border-radius: 1rem;
                 box-shadow: 0 8px 20px rgba(0,0,0,0.2);

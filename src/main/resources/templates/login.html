@@ -7,19 +7,32 @@
 
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
         <style>
             body {
-                background: linear-gradient(to right, #c1121f, #ef233c);
                 min-height: 100vh;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                position: relative;
+                background: linear-gradient(to right, #c1121f, #ef233c); /* fallback */
+            }
+
+            /* Imagen de fondo con overlay */
+            body::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: url('https://img.freepik.com/vector-gratis/piezas-carne-fresca-corte-patrones-fisuras_1284-36399.jpg?semt=ais_hybrid&w=740&q=80') no-repeat center center;
+                background-size: cover;
+                opacity: 0.4; /* transparencia para efecto sombreado */
+                z-index: 0;
             }
 
             .login-card {
-                background-color: white;
+                z-index: 1; /* siempre sobre el overlay */
+                background-color: rgba(255, 255, 255, 0.95);
                 padding: 2rem;
                 border-radius: 1rem;
                 box-shadow: 0 8px 20px rgba(0,0,0,0.2);
@@ -36,6 +49,7 @@
 
             .form-control {
                 border-radius: 0.5rem;
+                padding-left: 2rem;
             }
 
             .btn-primary {
@@ -60,8 +74,18 @@
             }
 
             .btn-secondary:hover {
-                background-color: #d90429;
-                border-color: #d90429;
+                background-color: #780000;
+                border-color: #780000;
+            }
+
+            .btn-primary:focus {
+                background-color: #780000;
+                border-color: #780000;
+            }
+
+            .btn-secondary:focus {
+                background-color: #780000;
+                border-color: #780000;
             }
 
             .register-link {
@@ -69,18 +93,27 @@
                 margin-top: 1rem;
                 text-decoration: none;
             }
+
+            .input-group-text {
+                background: transparent;
+                border: none;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #888;
+            }
         </style>
     </head>
     <body>
         <div class="login-card">
             <h1>Inicio de sesión</h1>
             <form th:action="@{/login}" method="post">
-                <div class="mb-3 text-start">
-                    <label for="username" class="form-label">Username</label>
+                <div class="mb-3 position-relative">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
                     <input type="text" class="form-control" id="username" placeholder="Tu usuario" name="username" required>
                 </div>
-                <div class="mb-3 text-start">
-                    <label for="password" class="form-label">Password</label>
+                <div class="mb-3 position-relative">
+                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
                     <input type="password" class="form-control" id="password" placeholder="Tu contraseña" name="password" required>
                 </div>
                 <button type="submit" class="btn btn-primary w-100 mb-2">Ingresar</button>
@@ -88,4 +121,7 @@
             </form>
         </div>
     </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+
 </html>

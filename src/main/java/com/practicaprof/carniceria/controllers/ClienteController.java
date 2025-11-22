@@ -30,6 +30,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -56,18 +59,45 @@ public class ClienteController {
     @Autowired
     private UsuarioService usuarioService;
 
+//    @GetMapping("/compras")
+//    public String mostrarCompras(@RequestParam(required = false) String busqueda, Model model) {
+//        List<Producto> productos;
+//
+//        if (busqueda != null && !busqueda.trim().isEmpty()) {
+//            productos = productoService.buscarPorDescripcion(busqueda);
+//        } else {
+//            productos = productoService.listarProductosDisponibles(); // O como obtengas los productos
+//        }
+//
+//        model.addAttribute("productos", productos);
+//        model.addAttribute("venta", new Venta());
+//        return "cliente/compras";
+//    }
     @GetMapping("/compras")
-    public String mostrarCompras(@RequestParam(required = false) String busqueda, Model model) {
-        List<Producto> productos;
+    public String mostrarCompras(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size,
+            @RequestParam(required = false) String busqueda,
+            Model model) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Producto> productosPage;
 
         if (busqueda != null && !busqueda.trim().isEmpty()) {
-            productos = productoService.buscarPorDescripcion(busqueda);
+            productosPage = productoService.buscarPorDescripcionPaginado(busqueda, pageable);
         } else {
-            productos = productoService.listarProductosDisponibles(); // O como obtengas los productos
+            productosPage = productoService.listarProductosDisponiblesPaginado(pageable);
         }
 
-        model.addAttribute("productos", productos);
+        model.addAttribute("productosPage", productosPage);
+        model.addAttribute("productos", productosPage.getContent());
+        model.addAttribute("busqueda", busqueda);
         model.addAttribute("venta", new Venta());
+
+        model.addAttribute("currentPage", page);              // ← NECESARIO
+        model.addAttribute("totalPages", productosPage.getTotalPages()); // ← NECESARIO
+
         return "cliente/compras";
     }
 
