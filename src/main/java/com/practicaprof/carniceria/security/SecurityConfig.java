@@ -27,7 +27,15 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/registrarUsuario").permitAll() // rutas públicas
+                .requestMatchers("/login", 
+                                "/registrarUsuario", 
+                                "/img/**",
+                                "/images/**",
+                                "/uploads/**",
+                                "/static/**",
+                                "/catalogo", 
+                                "/cliente/catalogo",
+                                "/registrarCliente").permitAll() // rutas públicas
                 .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

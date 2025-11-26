@@ -65,10 +65,19 @@
                 <p>Productos con stock mayor a 0: <span th:text="${productos.size()}"></span></p>
 
                 <!-- Buscador -->
-                <div class="input-group mb-3" style="max-width: 400px;">
-                    <span class="input-group-text"><i class="bi bi-search"></i></span>
-                    <input type="text" class="form-control" placeholder="Buscar por código o descripción...">
-                </div>
+                <form th:action="@{/informes/stock}" method="get" style="max-width: 450px;">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text"
+                               class="form-control"
+                               name="busqueda"
+                               placeholder="Buscar por código o descripción..."
+                               th:value="${busqueda}">
+                        <button class="btn btn-danger" type="submit">Buscar</button>
+                        <a th:href="@{/informes/stock}" class="btn btn-outline-secondary ms-2">Limpiar</a>
+                    </div>
+                </form>
+
 
                 <div class="table-responsive">
                     <table class="table align-middle">

@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UsuarioController {
-    
+
     @Autowired
     private UsuarioService servicio;
 //    @Autowired
 //    private VentaDetalleService vdServicio;
-    
+
     @GetMapping("/login")
     public String login() {
         return "login"; // templates/login.html
     }
-    
+
     //Mostrar el formulario
-    @GetMapping("/registrarUsuario") 
+    @GetMapping("/registrarUsuario")
     public String getRegistrarUsuario(Model model) {
         model.addAttribute("usuario", new Usuario());
         return "registrarUsuario";
     }
-    
+
     //Procesar el formulario
     @PostMapping("/registrarUsuario")
     public String registrarUsuario(@ModelAttribute("usuario") Usuario usuario) {
@@ -37,6 +37,20 @@ public class UsuarioController {
         return "redirect:/login"; // después de registrarse lo mando al login
     }
     
+    //Mostrar el formulario
+    @GetMapping("/registrarCliente")
+    public String getRegistrarCliente(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "registrarCliente";
+    }
+
+    //Procesar el formulario
+    @PostMapping("/registrarCliente")
+    public String registrarCliente(@ModelAttribute("usuario") Usuario usuario) {
+        servicio.registrarCliente(usuario.getUsername(), usuario.getPassword(), usuario.getEmail(), usuario.getTelefono());
+        return "redirect:/login"; // después de registrarse lo mando al login
+    }
+
 //    @GetMapping("/index")
 //    public String getIndex(Model model) {
 //        String productoMasVendido = vdServicio.obtenerProductoMasVendido();

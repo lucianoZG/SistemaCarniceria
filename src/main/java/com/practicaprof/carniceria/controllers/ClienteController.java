@@ -127,6 +127,23 @@ public class ClienteController {
     public String contacto() {
         return "cliente/contacto";
     }
+    
+    @GetMapping("/catalogo") 
+    public String getCatalogo(@RequestParam(required = false) String busqueda,
+                            Model model){
+        List<Producto> productos; 
+        
+        if (busqueda != null && !busqueda.trim().isEmpty()) {
+            productos = productoService.buscarPorDescripcion(busqueda);
+        } else {
+            productos = productoService.listarProductosDisponibles();
+        }
+        
+        model.addAttribute("productos", productos);
+        model.addAttribute("busqueda", busqueda);
+        
+        return "cliente/catalogo";
+    }
 
 //    @PostMapping("/compras/comprobante")
 //    public void generarComprobante(@RequestBody List<CarritoDto> carrito, HttpServletResponse response) throws IOException {

@@ -103,7 +103,7 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <input type="number" id="cantidadInput" class="form-control" placeholder="Cantidad" min="1" step="0.1">
+                            <input type="number" id="cantidadInput" class="form-control" placeholder="Cantidad" min="1" step="0.1" required>
                         </div>
                         <div class="col-md-3">
                             <button type="button" class="btn btn-success w-100" onclick="verificarStockAntesDeAgregar()">Agregar</button>
@@ -243,6 +243,19 @@
                 document.getElementById('totalVenta').textContent = total.toFixed(2);
                 document.getElementById('totalInput').value = total.toFixed(2);
             }
+
+            // 🔥 Validación de productos antes de enviar la venta
+            document.getElementById("ventaForm").addEventListener("submit", function (event) {
+                const filas = document.querySelectorAll("#detalleTable tr");
+
+                if (filas.length === 0) {
+                    event.preventDefault();
+                    mostrarError("Debe agregar al menos un producto para registrar la venta.");
+                    return false;
+                }
+
+                ocultarError();
+            });
         </script>
 
         <footer class="mt-auto">

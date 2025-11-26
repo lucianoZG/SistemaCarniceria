@@ -25,11 +25,55 @@ public class EmpleadoController {
         this.servicio = servicio;
     }
 
-    //Listar empleados
+    // Listar empleados
     @GetMapping
-    public String listar(Model model) {
-        List<Empleado> listaEmpleados = servicio.listarTodos();
-        model.addAttribute("empleados", listaEmpleados);
+    public String listar(
+            @RequestParam(value = "estado", required = false, defaultValue = "activos") String estado,
+            @RequestParam(value = "busqueda", required = false) String busqueda,
+            Model model) {
+
+        List<Empleado> lista;
+
+        // Si hay búsqueda
+        if (busqueda != null && !busqueda.trim().isEmpty()) {
+
+            switch (estado.toLowerCase()) {
+
+                case "inactivos":
+                    lista = servicio.buscarPorTextoYEstado(busqueda, false);
+                    break;
+
+                case "todos":
+                    lista = servicio.buscarPorCodigoONombreODni(busqueda);
+                    break;
+
+                default: // activos
+                    lista = servicio.buscarPorTextoYEstado(busqueda, true);
+                    break;
+            }
+
+        } else { // Sin búsqueda
+
+            switch (estado.toLowerCase()) {
+
+                case "inactivos":
+                    lista = servicio.listarInactivos();
+                    break;
+
+                case "todos":
+                    lista = servicio.listarTodos();
+                    break;
+
+                default:
+                    lista = servicio.listarActivos();
+                    break;
+            }
+        }
+
+        model.addAttribute("empleados", lista);
+        model.addAttribute("estado", estado);
+        model.addAttribute("busqueda", busqueda);
+
         return "/empleados/empleados";
     }
 
@@ -46,7 +90,7 @@ public class EmpleadoController {
         servicio.registrar(empleado);
         return "redirect:/empleados";
     }
-    
+
     //Editar empleado
     @GetMapping("/editar/{id}")
     public String mostrarFormularioModificar(@PathVariable int id, Model model) {

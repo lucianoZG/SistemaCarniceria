@@ -61,5 +61,10 @@ public class InventarioService {
 
         productoInventarioRepository.saveAll(lista);
     }
+    
+    public Inventario obtenerUltimoInventario() {
+        Inventario inv = inventarioRepository.findTopByOrderByFechaDesc().get();
+        return inv;
+    }
 
 }

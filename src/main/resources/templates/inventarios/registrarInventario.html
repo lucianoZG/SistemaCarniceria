@@ -95,11 +95,14 @@
 
                     <hr class="my-4">
 
+                    <div id="mensajeError" class="alert alert-danger mt-2" style="display:none;"></div>
+                    
                     <table class="table table-striped" id="tablaInventario">
                         <thead>
                             <tr>
                                 <th>Producto</th>
                                 <th>Stock relevado</th>
+                                <th>Acción</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -120,7 +123,7 @@
                     const stockRelevado = $('#stockRelevado').val();
 
                     if (!productoId || !stockRelevado) {
-                        alert('Seleccione un producto e ingrese un stock relevado.');
+                        mostrarError('Seleccione un producto e ingrese un stock relevado.');
                         return;
                     }
 
@@ -149,6 +152,31 @@
                     $(this).closest('tr').remove();
                 });
             });
+
+            function mostrarError(mensaje) {
+                const div = document.getElementById("mensajeError");
+                div.innerText = mensaje;
+                div.style.display = "block";
+            }
+
+            function ocultarError() {
+                const div = document.getElementById("mensajeError");
+                div.style.display = "none";
+            }
+
+            // Validar antes de enviar el formulario
+            $('#inventarioForm').on('submit', function (event) {
+                const filas = $('#tablaInventario tbody tr').length;
+
+                if (filas === 0) {
+                    event.preventDefault(); // Evita que el formulario se envíe
+                    mostrarError("Debe agregar al menos un producto para registrar el inventario.");
+                    return false;
+                }
+                
+                ocultarError();
+            });
+
         </script>
 
         <!-- Footer -->

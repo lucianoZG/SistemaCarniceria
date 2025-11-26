@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class VentaDetalleService {
-    
+
     private final VentaDetalleRepository repositorio;
 
     public VentaDetalleService(VentaDetalleRepository repositorio) {
         this.repositorio = repositorio;
     }
-    
+
     public List<VentaDetalle> listarDetalles() {
         return repositorio.findAll();
     }
@@ -32,7 +32,7 @@ public class VentaDetalleService {
     public void eliminar(int id) {
         repositorio.deleteById(id);
     }
-    
+
     public String obtenerProductoMasVendido() {
         Object resultado = repositorio.obtenerProductoMasVendidoUltimoMes();
 
@@ -46,8 +46,13 @@ public class VentaDetalleService {
 
         return nombre + " (" + total + " kg vendidos)";
     }
-    
+
     public List<VentaDetalle> findByProductoId(int productoId) {
         return repositorio.findByProductoId(productoId);
     }
+
+    public List<Object[]> obtenerTop5ProductosMasVendidos() {
+        return repositorio.obtenerTop5ProductosMasVendidos();
+    }
+
 }

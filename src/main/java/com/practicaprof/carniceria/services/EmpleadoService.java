@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmpleadoService {
-    
+
     private final EmpleadoRepository repositorio;
-    
-    public EmpleadoService (EmpleadoRepository repositorio) {
+
+    public EmpleadoService(EmpleadoRepository repositorio) {
         this.repositorio = repositorio;
     }
-    
+
 //    public Empleado registrar(String nombre, String dni, String direccion, String telefono) {
 //        Empleado emp = new Empleado();
 //        
@@ -26,20 +26,28 @@ public class EmpleadoService {
 //        
 //        return repositorio.save(emp);
 //    }
-    
     public void registrar(Empleado empleado) {
         empleado.setEstado(true);
         repositorio.save(empleado);
     }
-    
+
     public List<Empleado> listarActivos() {
         return repositorio.listarActivos();
     }
-    
+
+    public List<Empleado> listarInactivos() {
+        return repositorio.listarInactivos();
+    }
+
+
+    public List<Empleado> buscarPorTextoYEstado(String texto, boolean estado) {
+        return repositorio.buscarPorTextoYEstado(texto, estado);
+    }
+
     public List<Empleado> listarTodos() {
         return repositorio.findAll();
     }
-    
+
     public Empleado editar(Empleado emp) {
 //        Optional<Empleado> empleadoBuscado = repositorio.findById(id);
 //        Empleado empleadoExistente;
@@ -48,33 +56,35 @@ public class EmpleadoService {
 //            return null;
 //        } else {
 //            empleadoExistente = emp.get();
-            
+
 //            empleadoExistente.setNombre(emp.getNombre());
 //            empleadoExistente.setDni(emp.getDni());
 //            empleadoExistente.setDireccion(emp.getDireccion());
 //            empleadoExistente.setTelefono(emp.getTelefono());
-            emp.setEstado(true);
-            return repositorio.save(emp);
+        emp.setEstado(true);
+        return repositorio.save(emp);
 //        }
     }
-    
-    
-    
+
     public void eliminar(int id) {
         Optional<Empleado> empleadoBuscado = repositorio.findById(id);
-        
+
         if (empleadoBuscado.isPresent()) {
             Empleado emp = empleadoBuscado.get();
-            
+
             emp.setEstado(false);
-            
+
             repositorio.save(emp);
-        }        
+        }
     }
-    
+
     public Empleado obtenerPorId(int id) {
         Optional<Empleado> emp = repositorio.findById(id);
         Empleado empleado = emp.get();
         return empleado;
+    }
+
+    public List<Empleado> buscarPorCodigoONombreODni(String texto) {
+        return repositorio.findByNombreOrDniContainingIgnoreCaseOrIdAsString(texto);
     }
 }

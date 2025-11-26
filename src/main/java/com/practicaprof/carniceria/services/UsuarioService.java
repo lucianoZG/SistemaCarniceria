@@ -28,6 +28,16 @@ public class UsuarioService {
         usuario.setEstado(true); //Usuario activo
         return repo.save(usuario);
     }
+    public Usuario registrarCliente(String username, String rawPassword, String email, String telefono) {
+        Usuario usuario = new Usuario();
+        usuario.setUsername(username);
+        usuario.setPassword(passwordEncoder.encode(rawPassword));// 🔑 encriptar
+        usuario.setEmail(email);
+        usuario.setTelefono(telefono);
+        usuario.setRol("CLIENTE");
+        usuario.setEstado(true); //Usuario activo
+        return repo.save(usuario);
+    }
     
     public Optional<Usuario> buscarPorUsername(String username) {
         return repo.findByUsername(username);

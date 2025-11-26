@@ -72,7 +72,22 @@
                 font-weight: 500;
                 transition: background 0.3s ease;
             }
-
+            
+            .btn-terciary {
+                background-color: #669bbc;
+                border-color: #003049;
+                border-radius: 0.5rem;
+                font-weight: 500;
+                transition: background 0.3s ease;
+                color: #fff;
+            }
+ 
+            .btn-terciary:hover {
+                background-color: #003049;
+                border-color: #003049;
+                color: #fff;
+            }
+            
             .btn-secondary:hover {
                 background-color: #780000;
                 border-color: #780000;
@@ -102,10 +117,15 @@
                 transform: translateY(-50%);
                 color: #888;
             }
+            .logo {
+                border-radius: 50%;
+            }
         </style>
     </head>
     <body>
+        
         <div class="login-card">
+            <img class="logo" th:src="@{/img/logoChancho.png}" width="250" height="250" alt="Logo"/>
             <h1>Inicio de sesión</h1>
             <form th:action="@{/login}" method="post">
                 <div class="mb-3 position-relative">
@@ -118,6 +138,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary w-100 mb-2">Ingresar</button>
                 <a th:href="@{/registrarUsuario}" class="btn btn-secondary w-100 register-link">Registrarse</a>
+                <a th:href="@{/cliente/catalogo}" class="btn btn-terciary w-100 register-link">Ir al catálogo</a>
             </form>
         </div>
     </body>

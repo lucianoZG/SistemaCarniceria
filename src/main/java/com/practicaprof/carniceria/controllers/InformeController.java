@@ -60,20 +60,22 @@ public class InformeController {
     }
 
     @GetMapping("/stock")
-    public String informeStock(Model model) {
-//        List<Producto> productos = productoServicio.listarActivos();
-        ////        double totalStock = productos.stream()
-////                .mapToDouble(p -> p.getCantidad() * p.getPrecioUnitario())
-////                .sum();
-//
-//        double totalStock = productoServicio.obtenerTotalStock(productos);
+    public String informeStock(@RequestParam(required = false) String busqueda,
+            Model model) {
 
-//        List<ProductoInventario> lista = productoInventarioServicio.listarUltimoInventario();
-        List<Producto> lista = productoServicio.listarProductosDisponibles();
-        double total = productoServicio.obtenerTotalStock();
+        List<Producto> lista;
+
+        if (busqueda != null && !busqueda.trim().isBlank()) {
+            lista = productoServicio.buscarPorCodigoODescripcion(busqueda);
+        } else {
+            lista = productoServicio.listarProductosDisponibles();
+        }
+
+        double total = productoServicio.obtenerTotalStock(lista);
 
         model.addAttribute("productos", lista);
         model.addAttribute("totalStock", total);
+        model.addAttribute("busqueda", busqueda);
 
         return "informes/stock";
     }
@@ -674,8 +676,6 @@ public class InformeController {
 
         document.close();
     }
-
-    
 
     private void agregarPiePagina(Document document) {
         document.add(new Paragraph("\n\n"));

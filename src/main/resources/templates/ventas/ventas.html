@@ -84,12 +84,14 @@
 
                 <!-- Buscador -->
                 <form method="get" th:action="@{/ventas}">
-                    <div class="input-group mb-3" style="max-width: 400px;">
+                    <div class="input-group mb-3" style="max-width: 470px;">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                         <input type="text" class="form-control" 
                                name="busqueda"
                                th:value="${busqueda}"
-                               placeholder="Buscar por factura, cliente o fecha...">
+                               placeholder="Buscar por factura, cliente o fecha">
+                        <button class="btn btn-danger" type="submit">Buscar</button>
+                        <a th:href="@{/ventas}" class="btn btn-outline-secondary ms-2">Limpiar</a>
                     </div>
                 </form>
 

@@ -171,9 +171,23 @@
                 animation: fadeUp 1s ease forwards;
                 animation-delay: .2s;
             }
-            
+
             body {
                 background: linear-gradient(180deg, #ffffff 0%, #fff1f1 40%, #ffe5e5 100%);
+            }
+
+            .chart-size {
+                width: 100% !important;
+                height: 600px !important;
+            }
+
+            .fondo-grafico {
+                border: none;
+                border-radius: 16px;
+                padding: 24px;
+                background: #ffffff;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+                transition: transform .15s ease;
             }
 
         </style>
@@ -195,9 +209,30 @@
         <!-- DASHBOARD DE ESTADÍSTICAS -->
 
         <div class="container my-5">
-
             <!-- TÍTULO PRINCIPAL -->
             <h1 class="dashboard-title">Panel de Control</h1>
+
+
+            <!--<div class="fondo-grafico">-->
+                <!-- GRÁFICOS -->
+                <div class="row g-6 justify-content-center fondo-grafico mb-3">
+                    <!-- Top 5 Productos Más Vendidos -->
+                    <div class="col-md-2 col-lg-6 mt-4 mb-3">
+                        <div class="d-flex flex-column align-items-center justify-content-center">
+                            <h4 class="text-center text-danger"><strong>Top 5 Productos Más Vendidos</strong></h4>
+                            <canvas id="topProductosChart" class="chart-size"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 col-lg-6 mt-4 mb-3">
+                        <!-- Ventas por días de la semana -->
+                        <div class="d-flex flex-column align-items-center justify-content-center">
+                            <h4 class="text-center text-danger"><strong>Ventas por día de la semana</strong></h4>
+                            <canvas id="ventasSemanaChart" class="chart-size"></canvas>
+                        </div>
+                    </div>
+                </div>
+            <!--</div>-->
 
             <div class="row g-4 justify-content-center">
 
@@ -206,10 +241,10 @@
                     <div class="stat-card">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <div class="stat-label">Producto más vendido</div>
+                                <div class="stat-label">Fecha del último inventario realizado</div>
                                 <div class="stat-value text-danger" 
-                                     th:text="${productoMasVendido}">
-                                    Asado (320 kg vendidos)
+                                     th:text="${ultimoInventario}">
+                                    20/11/2025
                                 </div>
                             </div>
                             <div class="stat-icon icon-green">📦</div>
@@ -262,8 +297,96 @@
                     </div>
                 </div>
 
+
+
             </div>
+
         </div>
+
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script th:inline="javascript">
+            const nombres = [[${nombresProductos
+            }
+            ]];
+            const cantidades = [[${cantidadesProductos
+            }
+            ]];
+            const ctx = document.getElementById('topProductosChart').getContext('2d');
+            new Chart(ctx, {
+            type: 'pie',
+                    data: {
+                    labels: nombres,
+                            datasets: [{
+                            data: cantidades,
+                                    borderWidth: 1
+                            }]
+                    },
+                    options: {
+                    responsive: true,
+                            plugins: {
+                            legend: {
+                            position: 'bottom',
+                                    labels: {
+                                    font: {
+                                    size: 20,
+                                            weight: 'bold'
+                                    },
+                                            padding: 18
+                                    }
+                            }
+                            }
+                    }
+            });
+        </script>
+
+        <script th:inline="javascript">
+            const dias = [[${diasSemana}]];
+            const cantidadesDias = [[${cantidadesDias}]];
+            const ctx2 = document.getElementById('ventasSemanaChart').getContext('2d');
+            new Chart(ctx2, {
+            type: 'bar',
+                    data: {
+                    labels: dias,
+                            datasets: [{
+                            label: 'Ventas',
+                                    data: cantidadesDias,
+                                    borderWidth: 1
+                            }]
+                    },
+                    options: {
+                    responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                            mode: 'nearest',
+                                    intersect: true
+                            },
+                            scales: {
+                            y: {
+                            beginAtZero: true,
+                                    ticks: {
+                                    font: { size: 14 }
+                                    }
+                            },
+                                    x: {
+                                    ticks: {
+                                    font: { size: 20 }
+                                    }
+                                    }
+                            },
+                            plugins: {
+                            legend: {
+                            labels: {
+                            font: { size: 20 }
+                            }
+                            }
+                            }
+                    }
+            });
+        </script>
+
+
 
         <!-- FEATURES -->
         <div class="container py-5">

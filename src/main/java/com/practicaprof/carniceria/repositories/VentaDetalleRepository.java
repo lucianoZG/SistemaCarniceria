@@ -25,10 +25,17 @@ public interface VentaDetalleRepository extends JpaRepository<VentaDetalle, Inte
         LIMIT 1
     """, nativeQuery = true)
     Object obtenerProductoMasVendidoUltimoMes();
-    
+
     List<VentaDetalle> findByProductoId(int productoId);
-    
+
     @Query("SELECT DISTINCT vd.producto FROM VentaDetalle vd")
     List<Producto> findDistinctProductosVendidos();
+
+    @Query("SELECT vd.producto.descripcion, SUM(vd.totalCantidad) "
+            + "FROM VentaDetalle vd "
+            + "GROUP BY vd.producto.descripcion "
+            + "ORDER BY SUM(vd.totalCantidad) DESC "
+            + "LIMIT 5")
+    List<Object[]> obtenerTop5ProductosMasVendidos();
 
 }

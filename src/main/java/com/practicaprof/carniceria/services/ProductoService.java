@@ -56,7 +56,7 @@ public class ProductoService {
     }
 
     public List<Producto> buscarPorDescripcionOCodigo(String texto) {
-        return repositorio.findByDescripcionContainingIgnoreCaseOrIdAsString(texto, texto);
+        return repositorio.findByDescripcionContainingIgnoreCaseOrIdAsString(texto);
     }
 
     public List<Producto> buscarPorDescripcionOCodigoYEstado(String texto, boolean estado) {
@@ -108,14 +108,14 @@ public class ProductoService {
 //        
 //        return total;
 //    }
-    public double obtenerTotalStock() {
-        List<ProductoInventario> lista = listarStockActual();
+    public double obtenerTotalStock(List<Producto> lista) {
+//        List<ProductoInventario> lista = listarStockActual();
+//        List<Producto> lista = listarProductosDisponibles();
 
         double total = 0;
 
-        for (ProductoInventario pi : lista) {
-            Producto p = pi.getProducto();
-            total += pi.getStockActual() * p.getPrecioUnitario();
+        for (Producto p : lista) {
+            total += p.getStock() * p.getPrecioUnitario();
         }
         return total;
     }
@@ -169,4 +169,20 @@ public class ProductoService {
         return repositorio.findByStockGreaterThan(0, pageable);
     }
 
+    public List<Producto> buscarPorCodigoODescripcion(String texto) {
+        return repositorio.findByDescripcionContainingIgnoreCaseOrIdAsString(texto);
+    }
+
+    public String obtenerProductoConMenorStock() {
+        // Buscamos el producto usando el método nuevo
+        Optional<Producto> productoOpt = repositorio.findTopByEstadoTrueOrderByStockAsc();
+
+        if (productoOpt.isPresent()) {
+            Producto p = productoOpt.get();
+            // Retornamos el string formateado
+            return p.getDescripcion() + " (" + p.getStock() + " kg disponibles)";
+        } else {
+            return "Sin datos de stock";
+        }
+    }
 }

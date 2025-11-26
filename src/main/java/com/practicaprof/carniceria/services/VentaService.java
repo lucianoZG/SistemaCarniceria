@@ -8,7 +8,9 @@ import com.practicaprof.carniceria.entities.VentaDetalle;
 import com.practicaprof.carniceria.repositories.VentaRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +43,6 @@ public class VentaService {
 //            if (optionalInventario.isEmpty()) {
 //                return "El producto con ID " + idProducto + " no pertenece al último inventario o no está activo.";
 //            }
-
 //            ProductoInventario productoInv = optionalInventario.get();
             // Validar stock
             if (detalle.getTotalCantidad() > producto.getStock()) {
@@ -124,6 +125,22 @@ public class VentaService {
 
     public List<Venta> buscarPorFacturaClienteOFecha(String texto, LocalDate fecha) {
         return repositorio.buscarPorFacturaClienteOFecha(texto, fecha);
+    }
+
+    public Map<String, Long> ventasPorDiaSemana() {
+        List<Object[]> datos = repositorio.ventasPorDiaSemana();
+
+        String[] dias = {"Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"};
+
+        Map<String, Long> resultado = new LinkedHashMap<>();
+
+        for (Object[] fila : datos) {
+            int diaSemana = ((Number) fila[0]).intValue(); // 1-7
+            long cantidad = ((Number) fila[1]).longValue();
+            resultado.put(dias[diaSemana - 1], cantidad);
+        }
+
+        return resultado;
     }
 
 }
