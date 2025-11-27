@@ -73,23 +73,28 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Descripción</label>
-                        <input type="text" th:field="*{descripcion}" class="form-control" placeholder="Descripción del producto" required>
+                        <input type="text" th:field="*{descripcion}" class="form-control" placeholder="Descripción del producto" required
+                               th:classappend="${#fields.hasErrors('descripcion')} ? 'is-invalid' : ''">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}">
+                            Error en el nombre.
+                        </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Precio Unitario</label>
-                        <input type="number" step="0.01" class="form-control" th:field="*{precioUnitario}" required>
+                        <input type="number" step="0.01" min="0.01" class="form-control" th:field="*{precioUnitario}" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Stock inicial</label>
-                        <input type="number" step="0.01" class="form-control" th:field="*{stock}" required>
+                        <input type="number" step="1" min="1" class="form-control" th:field="*{stock}" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Precio de costo</label>
-                        <input type="number" step="0.01" class="form-control" th:field="*{precioCosto}" required>
+                        <input type="number" step="0.01" min="0.01" class="form-control" th:field="*{precioCosto}" required>
                     </div>
+
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Imagen del Producto</label>

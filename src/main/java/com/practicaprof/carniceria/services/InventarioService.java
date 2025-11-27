@@ -63,8 +63,7 @@ public class InventarioService {
     }
     
     public Inventario obtenerUltimoInventario() {
-        Inventario inv = inventarioRepository.findTopByOrderByFechaDesc().get();
-        return inv;
+        return inventarioRepository.findTopByOrderByFechaDesc().orElse(null);
     }
 
 }

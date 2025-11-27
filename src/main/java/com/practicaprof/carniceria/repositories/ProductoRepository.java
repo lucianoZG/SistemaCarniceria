@@ -18,6 +18,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     @Query("SELECT p FROM Producto p WHERE p.estado = false")
     List<Producto> listarInactivos();
+    
+    //Verificar si el nombre de ese producto ya existe en la base de datos
+    boolean existsByDescripcion(String descripcion);
 
     // Buscar por descripción o ID convertido a string, se puede simplificar pasando solo un texto.
     @Query("SELECT p FROM Producto p WHERE "

@@ -243,7 +243,7 @@
                             <div>
                                 <div class="stat-label">Fecha del último inventario realizado</div>
                                 <div class="stat-value text-danger" 
-                                     th:text="${ultimoInventario}">
+                                     th:text="${ultimoInventario != null ? ultimoInventario : 'No hay inventarios registrados'}">
                                     20/11/2025
                                 </div>
                             </div>

@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    
+
     private final UserDetailsServiceImpl userDetailsService;
     private final CustomSuccessHandler customSuccessHandler;
 
@@ -27,21 +27,22 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", 
-                                "/registrarUsuario", 
-                                "/img/**",
-                                "/images/**",
-                                "/uploads/**",
-                                "/static/**",
-                                "/catalogo", 
-                                "/cliente/catalogo",
-                                "/registrarCliente").permitAll() // rutas públicas
+                .requestMatchers("/login",
+                        "/registrarUsuario",
+                        "/img/**",
+                        "/images/**",
+                        "/uploads/**",
+                        "/static/**",
+                        "/catalogo",
+                        "/cliente/catalogo",
+                        "/registrarCliente").permitAll() // rutas públicas
                 .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                 .loginPage("/login") // podés definir tu propio controlador/vista
-//                .defaultSuccessUrl("/index", true)
+                //                .defaultSuccessUrl("/index", true)
                 .successHandler(customSuccessHandler)
+                .failureUrl("/login?error=true") // <-- URL en caso de error
                 .permitAll()
                 )
                 .logout(logout -> logout.permitAll())
@@ -64,6 +65,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
-    
+
 }

@@ -78,18 +78,33 @@
 
                     <div class="mb-3">
                         <label class="form-label">DNI</label>
-                        <input type="text" th:field="*{dni}" class="form-control" placeholder="DNI" required>
+                        <input type="text" 
+                               th:field="*{dni}" 
+                               class="form-control" 
+                               placeholder="DNI" 
+                               required
+                               pattern="\d{7,8}" 
+                               title="Ingrese un DNI válido de 7 u 8 números">
                     </div>
+
 
                     <div class="mb-3">
                         <label class="form-label">Dirección</label>
                         <input type="text" th:field="*{direccion}" class="form-control" placeholder="Dirección" required>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Teléfono</label>
-                        <input type="text" th:field="*{telefono}" class="form-control" placeholder="Teléfono" required>
+                    <div class="mb-3 text-start">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="tel"
+                               th:field="*{telefono}"
+                               class="form-control"
+                               id="telefono"
+                               placeholder="Tu teléfono"
+                               required
+                               pattern="[0-9\s\-]{7,20}"
+                               title="Ingrese un teléfono válido (solo números, espacios o guiones, entre 7 y 20 caracteres).">
                     </div>
+
                     <div class="text-end mt-4">
                         <button type="submit" class="btn btn-primary w-100">Registrar Empleado</button>
                     </div>

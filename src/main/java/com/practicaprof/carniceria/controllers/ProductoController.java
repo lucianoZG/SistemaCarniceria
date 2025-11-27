@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,8 +77,22 @@ public class ProductoController {
 
     @PostMapping
     public String registrar(@ModelAttribute("producto") Producto producto,
+            BindingResult result,
             @RequestParam("imagenFile") MultipartFile imagenFile) throws IOException {
 //        servicio.registrarProducto(producto.getDescripcion(), producto.getPrecioUnitario(), producto.getCantidad());
+        // 1. VALIDACIÓN: Verificamos si el nombre ya existe
+        if (servicio.existeProducto(producto.getDescripcion())) {
+            // Rechazamos el valor del campo 'proDescripcion' (o 'nombre')
+            result.rejectValue("descripcion", "error.producto", "¡Este producto ya está registrado!");
+        }
+
+        // 2. Si hay errores (por la validación de arriba o validaciones de @Valid), volvemos al formulario
+        if (result.hasErrors()) {
+            // No hacemos redirect, retornamos la vista para no perder los datos que el usuario escribió
+            return "/productos/registrarProducto";
+        }
+
+        // --- Si pasó la validación, procedemos con la lógica normal ---        
         // Si subió una imagen
         if (!imagenFile.isEmpty()) {
 
@@ -134,7 +149,6 @@ public class ProductoController {
         }
 
 //        producto.setId(id);
-
         servicio.editar(producto);
         return "redirect:/productos";
     }

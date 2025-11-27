@@ -54,6 +54,10 @@ public class ProductoService {
     public List<Producto> listarTodos() {
         return repositorio.findAll();
     }
+    
+    public boolean existeProducto(String nombre) {
+        return repositorio.existsByDescripcion(nombre);
+    }
 
     public List<Producto> buscarPorDescripcionOCodigo(String texto) {
         return repositorio.findByDescripcionContainingIgnoreCaseOrIdAsString(texto);

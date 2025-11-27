@@ -72,7 +72,7 @@
                 font-weight: 500;
                 transition: background 0.3s ease;
             }
-            
+
             .btn-terciary {
                 background-color: #669bbc;
                 border-color: #003049;
@@ -81,13 +81,13 @@
                 transition: background 0.3s ease;
                 color: #fff;
             }
- 
+
             .btn-terciary:hover {
                 background-color: #003049;
                 border-color: #003049;
                 color: #fff;
             }
-            
+
             .btn-secondary:hover {
                 background-color: #780000;
                 border-color: #780000;
@@ -123,11 +123,15 @@
         </style>
     </head>
     <body>
-        
+
         <div class="login-card">
             <img class="logo" th:src="@{/img/logoChancho.png}" width="250" height="250" alt="Logo"/>
             <h1>Inicio de sesión</h1>
             <form th:action="@{/login}" method="post">
+                <div th:if="${errorMsg}" class="alert alert-danger" role="alert">
+                    <span th:text="${errorMsg}"></span>
+                </div>
+
                 <div class="mb-3 position-relative">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                     <input type="text" class="form-control" id="username" placeholder="Tu usuario" name="username" required>

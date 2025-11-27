@@ -103,7 +103,14 @@
 
                 <div class="mb-3 text-start">
                     <label for="telefono" class="form-label">Teléfono</label>
-                    <input type="tel" th:field="*{telefono}" class="form-control" id="telefono" placeholder="Tu teléfono" required>
+                    <input type="tel"
+                           th:field="*{telefono}"
+                           class="form-control"
+                           id="telefono"
+                           placeholder="Tu teléfono"
+                           required
+                           pattern="[0-9\s\-]{7,20}"
+                           title="Ingrese un teléfono válido (solo números, espacios o guiones, entre 7 y 20 caracteres).">
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100 mt-3">Registrar cliente</button>

@@ -1,5 +1,6 @@
 package com.practicaprof.carniceria.controllers;
 
+import com.practicaprof.carniceria.entities.Inventario;
 import com.practicaprof.carniceria.services.InventarioService;
 import com.practicaprof.carniceria.services.ProductoInventarioService;
 import com.practicaprof.carniceria.services.ProductoService;
@@ -25,19 +26,20 @@ public class HomeController {
 
     @Autowired
     private VentaService ventaServicio;
-    
+
     @Autowired
     private InventarioService inventarioServicio;
-    
+
     @Autowired
     private ProductoService productoServicio;
 
     @GetMapping("/index")
     public String index(Model model) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        
+
 //        String productoMasVendido = ventaDetalleServicio.obtenerProductoMasVendido();
-        String ultimoInventario = inventarioServicio.obtenerUltimoInventario().getFecha().format(formatter);
+        Inventario ultimoInventarioObj = inventarioServicio.obtenerUltimoInventario();
+        String ultimoInventario = (ultimoInventarioObj != null) ? ultimoInventarioObj.getFecha().format(formatter) : "Sin inventario";
         String productoMenorStock = productoServicio.obtenerProductoConMenorStock();
         double gananciasDelDia = ventaServicio.obtenerGananciasDelDia();
         String empleadoMasVentas = ventaServicio.obtenerEmpleadoConMasVentasUltimoMes();
@@ -52,9 +54,8 @@ public class HomeController {
             nombres.add((String) fila[0]);
             cantidades.add((Double) fila[1]);
         }
-        
-        Map<String, Long> ventasDias = ventaServicio.ventasPorDiaSemana();
 
+        Map<String, Long> ventasDias = ventaServicio.ventasPorDiaSemana();
 
         model.addAttribute("nombresProductos", nombres);
         model.addAttribute("cantidadesProductos", cantidades);

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UsuarioController {
@@ -19,7 +20,12 @@ public class UsuarioController {
 //    private VentaDetalleService vdServicio;
 
     @GetMapping("/login")
-    public String login() {
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        Model model) {
+        if (error != null) {
+        model.addAttribute("errorMsg", "Usuario o contraseña incorrectos");
+    }
+        
         return "login"; // templates/login.html
     }
 
