@@ -114,7 +114,7 @@ public class ProductoController {
         return "redirect:/productos";
     }
 
-    //Editar empleado
+    //Editar producto
     @GetMapping("/editar/{id}")
     public String mostrarFormularioModificar(@PathVariable int id, Model model) {
         Producto producto = servicio.obtenerPorId(id);
@@ -126,7 +126,9 @@ public class ProductoController {
     public String modificar(@PathVariable int id,
             @ModelAttribute("producto") Producto producto,
             @RequestParam("imagenFile") MultipartFile imagenFile) throws IOException {
-//        Producto productoExistente = servicio.obtenerPorId(id);
+
+        // 1. Buscamos el producto ORIGINAL que está en la base de datos
+        Producto productoEnBD = servicio.obtenerPorId(id);
 
         // Si subió una nueva imagen
         if (!imagenFile.isEmpty()) {
@@ -145,7 +147,7 @@ public class ProductoController {
             producto.setImagen("/uploads/productos/" + fileName);
         } else {
             // Mantener imagen anterior
-            producto.setImagen(producto.getImagen());
+            producto.setImagen(productoEnBD.getImagen());
         }
 
 //        producto.setId(id);

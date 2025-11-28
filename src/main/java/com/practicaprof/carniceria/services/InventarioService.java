@@ -28,7 +28,7 @@ public class InventarioService {
         this.productoInventarioRepository = productoInventarioRepository;
     }
 
-    public void registrarInventario(List<Integer> productosId, List<Integer> stocksRelevados) {
+    public void registrarInventario(List<Integer> productosId, List<Double> stocksRelevados) {
 
         Inventario inventario = new Inventario();
         inventario.setFecha(LocalDateTime.now());

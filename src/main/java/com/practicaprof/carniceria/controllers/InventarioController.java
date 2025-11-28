@@ -39,7 +39,7 @@ public class InventarioController {
     @PostMapping
     public String registrarInventario(
             @RequestParam("productoId") List<Integer> productoIds,
-            @RequestParam("stockRelevado") List<Integer> stockRelevados) {
+            @RequestParam("stockRelevado") List<Double> stockRelevados) {
 
         inventarioService.registrarInventario(productoIds, stockRelevados);
 

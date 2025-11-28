@@ -36,6 +36,23 @@ public class SecurityConfig {
                         "/catalogo",
                         "/cliente/catalogo",
                         "/registrarCliente").permitAll() // rutas públicas
+                // 2. Rutas COMPARTIDAS (Cliente Y Admin)
+                // Usamos hasAnyRole para permitir a cualquiera de los dos
+                .requestMatchers("/ventas/**").hasAnyRole("CLIENTE", "ADMIN")
+                // 2. Rutas EXCLUSIVAS de CLIENTE
+                // Todo lo que empiece con /cliente/ solo lo puede ver un CLIENTE
+                .requestMatchers("/cliente/**").hasRole("CLIENTE")
+                // 3. Rutas EXCLUSIVAS de ADMIN (Aquí bloqueamos al cliente)
+                // Debes listar todas las rutas de tu sistema de gestión
+                .requestMatchers(
+                        "/index", // El dashboard principal
+                        "/productos/**", // ABM productos
+//                        "/ventas/**", // Gestión ventas
+                        "/inventarios/**", // Inventarios
+                        "/empleados/**", // Gestión empleados
+                        "/informes/**" // Reportes
+                ).hasRole("ADMIN")
+                // 4. El resto requiere estar logueado (Cualquier rol)
                 .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

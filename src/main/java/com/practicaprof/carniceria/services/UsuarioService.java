@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UsuarioService {
-    
+
     private final UsuarioRepository repo;
     private final PasswordEncoder passwordEncoder;
 
@@ -28,6 +28,7 @@ public class UsuarioService {
         usuario.setEstado(true); //Usuario activo
         return repo.save(usuario);
     }
+
     public Usuario registrarCliente(String username, String rawPassword, String email, String telefono) {
         Usuario usuario = new Usuario();
         usuario.setUsername(username);
@@ -38,11 +39,11 @@ public class UsuarioService {
         usuario.setEstado(true); //Usuario activo
         return repo.save(usuario);
     }
-    
+
     public Optional<Usuario> buscarPorUsername(String username) {
         return repo.findByUsername(username);
     }
-    
+
     public void desactivarUsuario(Integer id) {
         repo.findById(id).ifPresent(usuario -> {
             usuario.setEstado(false);
@@ -56,18 +57,22 @@ public class UsuarioService {
             repo.save(usuario);
         });
     }
-    
+
     public List<Usuario> listarActivos() {
         return repo.listarActivos();
     }
-    
+
     public List<Usuario> listarClientesActivos() {
         return repo.listarClientesActivos();
     }
-    
+
     public Usuario obtenerPorId(int id) {
         Optional<Usuario> us = repo.findById(id);
         Usuario usuario = us.get();
         return usuario;
+    }
+
+    public boolean existeUsuario(String username) {
+        return repo.existsByUsername(username);
     }
 }

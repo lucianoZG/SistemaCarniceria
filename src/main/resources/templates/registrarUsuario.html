@@ -88,7 +88,11 @@
             <form th:action="@{/registrarUsuario}" th:object="${usuario}" method="POST">
                 <div class="mb-3 text-start">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Tu nombre de usuario" required>
+                    <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Tu nombre de usuario" required 
+                           th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
+                        Aquí aparecerá el texto del error.
+                    </div>
                 </div>
 
                 <div class="mb-3 text-start">

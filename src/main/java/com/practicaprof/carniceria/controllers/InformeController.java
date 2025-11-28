@@ -81,11 +81,30 @@ public class InformeController {
     }
 
     @GetMapping("/stock/pdf")
-    public void descargarPDFStock(HttpServletResponse response) throws Exception {
+    public void descargarPDFStock(@RequestParam(required = false) String busqueda,
+                                 HttpServletResponse response) throws Exception {
 
-        List<Producto> productos = productoServicio.listarProductosDisponibles(); // productos con stock > 0
+        List<Producto> productos;
+
+        // LÓGICA DE FILTRADO
+        if (busqueda != null && !busqueda.trim().isEmpty()) {
+            // 1. Buscamos por nombre o código (usando el servicio que ya tienes)
+            // 2. IMPORTANTE: Filtramos con stream para dejar solo los que tienen stock > 0
+            //    (ya que este es un reporte de "Stock Disponible")
+            productos = productoServicio.buscarPorDescripcionOCodigo(busqueda).stream()
+                    .filter(p -> p.getStock() > 0)
+                    .collect(Collectors.toList());
+
+            // Opcional: Cambiar el nombre del archivo si es una búsqueda
+            response.setHeader("Content-Disposition", "attachment; filename=stock_busqueda_" + busqueda + ".pdf");
+        } else {
+            // Si no hay búsqueda, trae todos los disponibles como hacías antes
+            productos = productoServicio.listarProductosDisponibles();
+            response.setHeader("Content-Disposition", "attachment; filename=stock_disponible.pdf");
+        }
+
         if (productos.isEmpty()) {
-            return; // si no hay productos, no genera PDF
+            return; // O podrías generar un PDF vacío que diga "No se encontraron productos"
         }
 
         response.setContentType("application/pdf");
@@ -610,6 +629,7 @@ public class InformeController {
 
         Map<Integer, Double> gananciaPorProductoId = new HashMap<>();
         Map<Integer, Producto> productoPorId = new HashMap<>();
+        Double gananciaTotal = 0.0;
 
         for (Venta v : ventasFiltradas) {
             for (VentaDetalle det : v.getListaVentaDetalle()) {
@@ -617,6 +637,8 @@ public class InformeController {
                 if (det.getProducto() == null) {
                     continue;
                 }
+
+                gananciaTotal += det.getPrecioTotalProducto() - det.getTotalCantidad() * det.getPrecioCostoActual();
 
                 int pid = det.getProducto().getId();
                 productoPorId.putIfAbsent(pid, det.getProducto());
@@ -628,6 +650,9 @@ public class InformeController {
 
         document.add(new Paragraph("Ganancias Totales por Producto")
                 .setFontSize(16).setBold().setMarginBottom(10));
+        document.add(new Paragraph("\n"));
+        document.add(new Paragraph("Ganancia: $ " + gananciaTotal)
+                .setFontSize(12));
 
 //        float[] columnas = {280f, 150f};
 //        Table table = new Table(columnas);
@@ -670,6 +695,26 @@ public class InformeController {
             table.addCell("$ " + entry.getValue());
         }
 
+        // -----------------------------------------------------------
+        // --- AGREGAR ESTO: Fila de Total al final de la tabla ---
+        // -----------------------------------------------------------
+        // Celda de etiqueta "TOTAL"
+        Cell celdaTotalTexto = new Cell()
+                .add(new Paragraph("TOTAL ACUMULADO"))
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT) // Alineado a la derecha para pegarse al número
+                .setBackgroundColor(ColorConstants.LIGHT_GRAY); // Mismo color del header para resaltar
+
+        // Celda del Valor Numérico
+        Cell celdaTotalValor = new Cell()
+                .add(new Paragraph("$ " + String.format("%.2f", gananciaTotal)))
+                .setBold()
+                .setBackgroundColor(ColorConstants.LIGHT_GRAY);
+
+        table.addCell(celdaTotalTexto);
+        table.addCell(celdaTotalValor);
+
+        // -----------------------------------------------------------
         document.add(table);
 
         agregarPiePagina(document);

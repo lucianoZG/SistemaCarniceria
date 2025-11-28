@@ -103,10 +103,12 @@
 
                     <div class="d-flex justify-content-end mb-4"
                          th:if="${productos != null and !#lists.isEmpty(productos)}">
-                        <a th:href="@{/informes/stock/pdf}"
+
+                        <a th:href="@{/informes/stock/pdf(busqueda=${busqueda})}"
                            class="btn btn-danger">
                             <i class="bi bi-file-earmark-pdf-fill"></i> Descargar PDF
                         </a>
+
                     </div>
                 </div>
 

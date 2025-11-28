@@ -18,7 +18,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     @Query("SELECT p FROM Producto p WHERE p.estado = false")
     List<Producto> listarInactivos();
-    
+
     //Verificar si el nombre de ese producto ya existe en la base de datos
     boolean existsByDescripcion(String descripcion);
 
@@ -72,7 +72,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     Page<Producto> findByDescripcionContainingIgnoreCaseAndStockGreaterThan(String descripcion, int stock, Pageable pageable);
 
-    Page<Producto> findByStockGreaterThan(int stock, Pageable pageable);
+//    Page<Producto> findByStockGreaterThan(int stock, Pageable pageable);
+    // Opción 1: Hardcoded (Busca siempre stock > X Y estado = true)
+    Page<Producto> findByStockGreaterThanAndEstadoTrue(int stock, Pageable pageable);
 
     // Esto busca el primero ordenando por stock ascendente.
     // Devuelve un Optional para evitar NullPointerExceptions si la tabla está vacía.

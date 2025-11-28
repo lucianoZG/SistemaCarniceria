@@ -90,8 +90,14 @@
                     </div>
 
 
+                    <label>Imágen actual:</label> <br>
+                    <img th:if="${producto.imagen != null}" 
+                         th:src="@{${producto.imagen}}" loc
+                         style="max-width: 150px; border: 1px solid #ccc; padding: 5px; margin-bottom: 10px;">
+                    <br>
+
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Imagen del Producto</label>
+                        <label class="form-label fw-bold">Imágen del Producto</label>
                         <input type="file" class="form-control" name="imagenFile" accept="image/*">
                     </div>
 

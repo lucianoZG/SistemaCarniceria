@@ -170,7 +170,7 @@ public class ProductoService {
     }
 
     public Page<Producto> listarProductosDisponiblesPaginado(Pageable pageable) {
-        return repositorio.findByStockGreaterThan(0, pageable);
+        return repositorio.findByStockGreaterThanAndEstadoTrue(0, pageable);
     }
 
     public List<Producto> buscarPorCodigoODescripcion(String texto) {
