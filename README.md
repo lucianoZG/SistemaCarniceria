@@ -37,8 +37,8 @@ This system replaces manual/paper-based workflows with a centralized digital pla
 | :---: | :---: |
 | <img src="assets/sales.png" width="400" alt="Sales"> | <img src="assets/report.png" width="400" alt="Reports"> |
 
-| Shopping cart (client) |
-| :---: | :---: |
+| Shopping cart (client) | 
+| :---: |
 | <img src="assets/shopping-cart.png" width="400" alt="Shopping-cart"> |
 
 ---
