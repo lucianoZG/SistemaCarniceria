@@ -9,7 +9,9 @@
 
 ## 📖 Overview
 
-A comprehensive **Full Stack Management Solution** designed to digitize the daily operations of a retail meat business (Butcher Shop).
+A comprehensive **Full Stack Solution** designed to digitize a retail meat business. The system serves two distinct purposes:
+1.  **Management Dashboard:** For Admins and Employees to track stock, manage sales, and generate reports.
+2.  **E-commerce Portal:** For **Customers** to browse products, add items to a **Shopping Cart**, and place orders online.
 
 This system replaces manual/paper-based workflows with a centralized digital platform, allowing business owners to track stock in real-time, manage employee sales, and generate historical reports. It was built with a strong focus on **Relational Database Design** and **Business Logic integrity**.
 
@@ -27,13 +29,17 @@ This system replaces manual/paper-based workflows with a centralized digital pla
 
 ## 📸 Screenshots
 
-| Login Screen | Inventory Dashboard |
+| Login Screen | Top 5 products and sales by day of the week dashboards |
 | :---: | :---: |
-| <img src="assets/login-screen.png" width="400" alt="Login"> | <img src="assets/inventory.png" width="400" alt="Inventory"> |
+| <img src="assets/login-screen.png" width="400" alt="Login"> | <img src="assets/dashboards.png" width="400" alt="Dashboards"> |
 
 | Sales Interface | Reporting |
 | :---: | :---: |
 | <img src="assets/sales.png" width="400" alt="Sales"> | <img src="assets/report.png" width="400" alt="Reports"> |
+
+| Shopping cart (client) |
+| :---: | :---: |
+| <img src="assets/shopping-cart.png" width="400" alt="Shopping-cart"> |
 
 ---
 
@@ -50,8 +56,10 @@ This system replaces manual/paper-based workflows with a centralized digital pla
 * **Sales History:** Detailed log of all transactions, filtered by date or employee.
 
 ### 3. User & Security
-* **Role-Based Access:** Secure login for Admins (Owners) and Employees (Sellers).
-* **Employee Performance:** Tracks sales performance per employee.
+The system implements **Spring Security** to enforce strict isolation between user types:
+
+* **ROLE_ADMIN** Access to the Back-office (Inventory, Reports, All Orders). Cannot access personal client carts.
+* **ROLE_CUSTOMER:** Exclusive access to the Storefront and personal Shopping Cart. Restricted from viewing internal business data.
 
 ---
 
