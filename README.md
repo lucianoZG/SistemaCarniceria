@@ -67,7 +67,7 @@ The system implements **Spring Security** to enforce strict isolation between us
 
 The system relies on a robust relational database schema to ensure data consistency.
 
-| <img src="assets/diagram.png" width="400" alt="Diagram"> |
+<img src="assets/diagram.png" width="400" alt="Diagram">
 
 * **Entities:** `Product`, `Inventory`, `User`, `Sale`, `SaleDetail`, `Employee`.
 * **Relationships:**
@@ -100,7 +100,6 @@ The system relies on a robust relational database schema to ensure data consiste
 ## 🔮 Future Improvements (Roadmap)
 * [ ] **Dockerization:** Containerize the app and database for easier deployment.
 * [ ] **SonarQube Integration:** Implement static code analysis for code quality.
-* [ ] **Charts:** Integrate Chart.js for visual sales reporting.
 
 ---
 
